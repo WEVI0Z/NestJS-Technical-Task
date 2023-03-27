@@ -1,14 +1,10 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AccountsController } from './accounts/accounts.controller';
-import { TransactionsController } from './transactions/transactions.controller';
-import { ClientsController } from './clients/clients.controller';
 import { AccountsModule } from './accounts/accounts.module';
 import { TransactionsModule } from './transactions/transactions.module';
 import { ClientsModule } from './clients/clients.module';
 import { ConfigModule } from '@nestjs/config';
-import { TypeORMError } from 'typeorm';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
@@ -28,7 +24,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     TransactionsModule,
     ClientsModule
   ],
-  controllers: [AppController, AccountsController, TransactionsController, ClientsController],
+  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}
