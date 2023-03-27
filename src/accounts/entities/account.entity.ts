@@ -5,21 +5,31 @@ export class account {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
-    person_id: number;
+    @Column("person_id")
+    personId: number;
 
-    @Column()
+    @Column({
+        default: 0
+    })
     balance: number;
 
-    @Column()
-    daily_withdrawal_limit: number;
+    @Column({
+        name: "daily_withdrawal_limit",
+        default: 10
+    })
+    dailyWithdrawalLimit: number;
 
-    @Column()
+    @Column({
+        default: true
+    })
     active: boolean;
 
-    @Column()
-    account_type: number;
+    @Column("account_type")
+    accountType: number;
 
-    @Column()
-    create_data: Date;
+    @Column({
+        name: "create_date",
+        default: new Date()
+    })
+    createDate: Date;
 }

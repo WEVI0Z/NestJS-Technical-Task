@@ -5,12 +5,12 @@ export class account {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
-    account_id: number;
+    @Column("account_id")
+    accountId: number;
 
     @Column()
     value: number;
 
-    @Column()
-    transaction_date: Date;
+    @Column("transaction_date")
+    transactionDate: Date;
 }

@@ -11,6 +11,6 @@ export class account {
     @Column()
     document: string;
 
-    @Column()
-    birth_date: Date;
+    @Column("birth_date")
+    birthDate: Date;
 }
