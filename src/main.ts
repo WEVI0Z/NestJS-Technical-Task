@@ -20,7 +20,7 @@ function connectSwagger(app) {
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  connectSwagger(app);
+  // connectSwagger(app);
 
   await app.listen(3000);
 }

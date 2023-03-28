@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { AccountsService } from './accounts.service';
-import { CreateClientAccountDto } from './dtos/create-client-account.dto';
+import { CreateClientAccountDto } from './dto/create-client-account.dto';
 
 @Controller('accounts')
 export class AccountsController {

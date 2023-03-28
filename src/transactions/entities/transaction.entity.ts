@@ -1,16 +1,16 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-Entity()
+@Entity()
 export class Transaction {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column("account_id")
+    @Column()
     accountId: number;
 
     @Column()
     value: number;
 
-    @Column("transaction_date")
+    @Column()
     transactionDate: Date;
 }

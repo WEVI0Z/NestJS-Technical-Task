@@ -1,11 +1,11 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-Entity()
+@Entity()
 export class Account {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column("person_id")
+    @Column()
     personId: number;
 
     @Column({
@@ -24,7 +24,7 @@ export class Account {
     })
     active: boolean;
 
-    @Column("account_type")
+    @Column()
     accountType: number;
 
     @Column({

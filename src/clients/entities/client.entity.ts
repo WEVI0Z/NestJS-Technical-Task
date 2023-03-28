@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-Entity()
+@Entity()
 export class Client {
     @PrimaryGeneratedColumn()
     id: number;
@@ -11,6 +11,6 @@ export class Client {
     @Column()
     document: string;
 
-    @Column("birth_date")
+    @Column()
     birthDate: Date;
 }

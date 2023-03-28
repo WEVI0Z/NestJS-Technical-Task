@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Client } from 'src/clients/entities/client.entity';
 import { Repository } from 'typeorm';
-import { CreateClientAccountDto } from './dtos/create-client-account.dto';
+import { CreateClientAccountDto } from './dto/create-client-account.dto';
 import { Account } from './entities/account.entity';
 
 @Injectable()
@@ -14,13 +14,27 @@ export class AccountsService {
         private readonly clientRepository: Repository<Client>
     ) {}
 
-    findAll() {
-        return this.accountRepository.find();
+    async findAll() {
+        return await this.accountRepository.find();
     }
 
-    createClientAccount(createClientAccountDto: CreateClientAccountDto) {
-        const account = this.accountRepository.create({accountType: 0});
+    async createClientAccount(createClientAccountDto: CreateClientAccountDto) {
         const client = this.clientRepository.create(createClientAccountDto); 
+
+        console.log(client);
+
+        const repoClient = this.clientRepository.save(client);
+
+        let clientId = 0;
+
+        await repoClient.then(client => clientId = client.id)
+
+        const account = this.accountRepository.create({
+            accountType: 0,
+            personId: clientId
+        });
+
+
         return this.accountRepository.save(account);
     }
 }
