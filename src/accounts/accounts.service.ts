@@ -22,8 +22,6 @@ export class AccountsService {
     async createClientAccount(createClientAccountDto: CreateClientAccountDto) {
         const client = this.clientRepository.create(createClientAccountDto); 
 
-        console.log(client);
-
         const repoClient = this.clientRepository.save(client);
 
         let clientId = 0;
@@ -41,7 +39,8 @@ export class AccountsService {
 
     async replenishBalance(id: number, replenishBalanceDto: ReplenishBalanceDto) {
         const accountData = await this.accountRepository.findOne({
-            where: {id}
+            where: {id},
+            select: {balance: true}
         });
 
         const account = await this.accountRepository.preload({
@@ -54,5 +53,11 @@ export class AccountsService {
         }
 
         return this.accountRepository.save(account);
+    }
+
+    async getBalance(id: number) {
+        const account = await this.accountRepository.findOneBy({id})
+
+        return account.balance;
     }
 }

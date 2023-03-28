@@ -19,8 +19,13 @@ export class AccountsController {
         return this.accountsService.createClientAccount(createClientAccountDto);
     }
 
-    @Patch("replenish/:id")
+    @Patch("balance/replenish/:id")
     replenishBalance(@Param("id") id: string, @Body() replenishBalanceDto: ReplenishBalanceDto) {
         return this.accountsService.replenishBalance(+id, replenishBalanceDto);
+    }
+
+    @Get("balance/:id")
+    getBalance(@Param("id") id: string) {
+        return this.accountsService.getBalance(+id);
     }
 }
