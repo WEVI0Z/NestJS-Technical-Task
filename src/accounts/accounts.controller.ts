@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { AccountsService } from './accounts.service';
 import { CreateClientAccountDto } from './dto/create-client-account.dto';
+import { ReplenishBalanceDto } from './dto/replenish-balance.dto';
 
 @Controller('accounts')
 export class AccountsController {
@@ -16,5 +17,10 @@ export class AccountsController {
     @Post()
     createClientAccount(@Body() createClientAccountDto: CreateClientAccountDto) {
         return this.accountsService.createClientAccount(createClientAccountDto);
+    }
+
+    @Patch("replenish/:id")
+    replenishBalance(@Param("id") id: string, @Body() replenishBalanceDto: ReplenishBalanceDto) {
+        return this.accountsService.replenishBalance(+id, replenishBalanceDto);
     }
 }

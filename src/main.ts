@@ -2,6 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AccountsModule } from './accounts/accounts.module';
 import { AppModule } from './app.module';
+import { ClientsModule } from './clients/clients.module';
+import { TransactionsModule } from './transactions/transactions.module';
 
 function connectSwagger(app) {
   const config = new DocumentBuilder()
@@ -11,7 +13,7 @@ function connectSwagger(app) {
     .build();
 
   const document = SwaggerModule.createDocument(app, config, {
-   include: [AccountsModule],
+   include: [AccountsModule, ClientsModule, TransactionsModule],
   });
   
   SwaggerModule.setup('api', app, document);
@@ -20,7 +22,7 @@ function connectSwagger(app) {
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // connectSwagger(app);
+  connectSwagger(app);
 
   await app.listen(3000);
 }

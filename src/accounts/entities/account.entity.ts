@@ -5,7 +5,9 @@ export class Account {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({
+        name: "person_id"
+    })
     personId: number;
 
     @Column({
@@ -24,7 +26,9 @@ export class Account {
     })
     active: boolean;
 
-    @Column()
+    @Column({
+        name: "account_type"
+    })
     accountType: number;
 
     @Column({

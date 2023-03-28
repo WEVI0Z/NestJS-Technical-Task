@@ -1,12 +1,16 @@
+import { ApiProperty } from "@nestjs/swagger";
 import { IsString, IsDate } from "class-validator";
 
 export class CreateClientAccountDto {
     @IsString()
+    @ApiProperty()
     readonly name: string;
 
     @IsString()
+    @ApiProperty()
     readonly document: string;
 
     @IsDate()
-    readonly birth_date: Date;
+    @ApiProperty()
+    readonly birthDate: Date;
 }

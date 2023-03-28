@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Client } from 'src/clients/entities/client.entity';
 import { Repository } from 'typeorm';
 import { CreateClientAccountDto } from './dto/create-client-account.dto';
+import { ReplenishBalanceDto } from './dto/replenish-balance.dto';
 import { Account } from './entities/account.entity';
 
 @Injectable()
@@ -34,6 +35,23 @@ export class AccountsService {
             personId: clientId
         });
 
+
+        return this.accountRepository.save(account);
+    }
+
+    async replenishBalance(id: number, replenishBalanceDto: ReplenishBalanceDto) {
+        const accountData = await this.accountRepository.findOne({
+            where: {id}
+        });
+
+        const account = await this.accountRepository.preload({
+            id: +id,
+            balance: accountData.balance + replenishBalanceDto.value
+        })
+        
+        if(!account) {
+            throw new NotFoundException(`Coffee #${id} not found`);
+        }
 
         return this.accountRepository.save(account);
     }
