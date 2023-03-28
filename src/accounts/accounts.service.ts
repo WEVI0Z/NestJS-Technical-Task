@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Client } from 'src/clients/entities/client.entity';
+import { Client } from '../clients/entities/client.entity';
 import { Repository } from 'typeorm';
 import { CreateClientAccountDto } from './dto/create-client-account.dto';
 import { ReplenishBalanceDto } from './dto/replenish-balance.dto';
@@ -16,23 +16,24 @@ export class AccountsService {
     ) {}
 
     async findAll() {
-        return await this.accountRepository.find();
+        return await this.accountRepository.find({
+            relations: ['person']
+        });
     }
 
     async createClientAccount(createClientAccountDto: CreateClientAccountDto) {
         const client = this.clientRepository.create(createClientAccountDto); 
 
-        const repoClient = this.clientRepository.save(client);
+        const clientRepo = this.clientRepository.save(client);
 
-        let clientId = 0;
+        const clientInstance: Client = await clientRepo.then(data => data);
 
-        await repoClient.then(client => clientId = client.id)
+        console.log(client);
 
         const account = this.accountRepository.create({
             accountType: 0,
-            personId: clientId
+            person: clientInstance
         });
-
 
         return this.accountRepository.save(account);
     }

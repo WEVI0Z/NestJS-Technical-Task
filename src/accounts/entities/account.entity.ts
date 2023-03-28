@@ -1,14 +1,14 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Client } from "src/clients/entities/client.entity";
+import { Column, Entity, JoinColumn, JoinTable, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Account {
     @PrimaryGeneratedColumn()
     id: number;
-
-    @Column({
-        name: "person_id"
-    })
-    personId: number;
+    
+    @JoinColumn()
+    @OneToOne(() => Client, client => client.person)
+    person: Client;
 
     @Column({
         default: 0
