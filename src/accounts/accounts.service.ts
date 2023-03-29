@@ -1,18 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Client } from '../clients/entities/client.entity';
 import { Repository } from 'typeorm';
-import { CreateClientAccountDto } from './dto/create-client-account.dto';
-import { ReplenishBalanceDto } from './dto/replenish-balance.dto';
+import { ReplenishBalanceDto } from '../transactions/dto/replenish-balance.dto';
 import { Account } from './entities/account.entity';
 
 @Injectable()
 export class AccountsService {
     constructor(
         @InjectRepository(Account)
-        private readonly accountRepository: Repository<Account>,
-        @InjectRepository(Client)
-        private readonly clientRepository: Repository<Client>
+        private readonly accountRepository: Repository<Account>
     ) {}
 
     async findAll() {
@@ -21,21 +17,8 @@ export class AccountsService {
         });
     }
 
-    async createClientAccount(createClientAccountDto: CreateClientAccountDto) {
-        const client = this.clientRepository.create(createClientAccountDto); 
-
-        const clientRepo = this.clientRepository.save(client);
-
-        const clientInstance: Client = await clientRepo.then(data => data);
-
-        console.log(client);
-
-        const account = this.accountRepository.create({
-            accountType: 0,
-            person: clientInstance
-        });
-
-        return this.accountRepository.save(account);
+    async findOne(id: number) {
+        return await this.accountRepository.findOneBy({ id })
     }
 
     async replenishBalance(id: number, replenishBalanceDto: ReplenishBalanceDto) {
