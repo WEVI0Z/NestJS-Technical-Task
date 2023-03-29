@@ -1,4 +1,4 @@
-import { CanActivate, ExecutionContext, HttpException, Injectable } from '@nestjs/common';
+import { CanActivate, ExecutionContext, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { AccountsService } from 'src/accounts/accounts.service';
 import { Transaction } from 'src/transactions/entities/transaction.entity';
@@ -35,7 +35,7 @@ export class BalanceRequestLimitGuard implements CanActivate {
         } else {
           throw new HttpException(
             `Account #${id} withdrawal limit is only ${account.dailyWithdrawalLimit} operations per day`,
-            403
+            HttpStatus.FORBIDDEN
           )
         }
       });

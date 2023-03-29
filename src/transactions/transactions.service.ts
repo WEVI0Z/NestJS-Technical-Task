@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AccountsService } from 'src/accounts/accounts.service';
 import { Account } from 'src/accounts/entities/account.entity';
@@ -28,6 +28,13 @@ export class TransactionsService {
 
         const replenishValue = replenishBalanceDto.value;
         const newValue = addMoney ? accountData.balance + replenishValue : accountData.balance - replenishValue;
+
+        if (newValue < 0) {
+            throw new HttpException(
+                "Not enough money on the Account's balance to complete the transaction",
+                HttpStatus.CONFLICT
+            )
+        }
 
         const account = await this.accountService.patchAccount(id, {balance: newValue})
 
