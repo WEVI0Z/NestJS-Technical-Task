@@ -9,6 +9,6 @@ import { Account } from './entities/account.entity';
   imports: [TypeOrmModule.forFeature([Account]), forwardRef(() => ClientsModule)],
   providers: [AccountsService],
   controllers: [AccountsController],
-  exports: [TypeOrmModule]
+  exports: [TypeOrmModule, AccountsService]
 })
 export class AccountsModule {}

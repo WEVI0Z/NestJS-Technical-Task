@@ -13,6 +13,11 @@ export class TransactionsController {
         return this.transactionsService.findAll();
     }
 
+    @Get(":id")
+    findAllAccountTransactions(@Param("id") id: string) {
+        return this.transactionsService.findAllAccountTransactions(+id);
+    }
+
     @Patch(":id/balance/replenish")
     replenishBalance(@Param("id") id: string, @Body() replenishBalanceDto: ReplenishBalanceDto) {
         return this.transactionsService.replenishBalance(+id, replenishBalanceDto);

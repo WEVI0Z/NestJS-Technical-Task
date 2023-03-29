@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ReplenishBalanceDto } from '../transactions/dto/replenish-balance.dto';
+import { PatchAccountDto } from './dto/patch-account.dto';
 import { Account } from './entities/account.entity';
 
 @Injectable()
@@ -18,7 +19,26 @@ export class AccountsService {
     }
 
     async findOne(id: number) {
-        return await this.accountRepository.findOneBy({ id })
+        const account = await this.accountRepository.findOneBy({ id });
+
+        if(!account) {
+            throw new NotFoundException(`Account #${id} not found`);
+        }
+
+        return account;
+    }
+
+    async patchAccount(id: number, patchAccountDto: PatchAccountDto) {
+        const account = await this.accountRepository.preload({
+            id: id,
+            ...patchAccountDto
+        })
+
+        if(!account) {
+            throw new NotFoundException(`Account #${id} not found`);
+        }
+
+        return this.accountRepository.save(account);
     }
 
     async getBalance(id: number) {
