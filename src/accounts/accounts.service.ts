@@ -21,24 +21,6 @@ export class AccountsService {
         return await this.accountRepository.findOneBy({ id })
     }
 
-    async replenishBalance(id: number, replenishBalanceDto: ReplenishBalanceDto) {
-        const accountData = await this.accountRepository.findOne({
-            where: {id},
-            select: {balance: true}
-        });
-
-        const account = await this.accountRepository.preload({
-            id: +id,
-            balance: accountData.balance + replenishBalanceDto.value
-        })
-        
-        if(!account) {
-            throw new NotFoundException(`Coffee #${id} not found`);
-        }
-
-        return this.accountRepository.save(account);
-    }
-
     async getBalance(id: number) {
         const account = await this.accountRepository.findOneBy({id})
 
