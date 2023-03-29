@@ -3,7 +3,6 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AccountsModule } from './accounts/accounts.module';
 import { AppModule } from './app.module';
 import { ClientsModule } from './clients/clients.module';
-import { ResourceCheckGuard } from './shared/guards/resource-check/resource-check.guard';
 import { TransactionsModule } from './transactions/transactions.module';
 
 function connectSwagger(app) {
@@ -25,7 +24,7 @@ async function bootstrap() {
 
   connectSwagger(app);
 
-  app.useGlobalGuards(new ResourceCheckGuard())
+  app.enableCors();
 
   await app.listen(3000);
 }

@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { AccountsService } from 'src/accounts/accounts.service';
 import { Account } from 'src/accounts/entities/account.entity';
 import { Repository } from 'typeorm';
+import { PaginationQueryDto } from './dto/pagination-query.dto';
 import { ReplenishBalanceDto } from './dto/replenish-balance.dto';
 import { Transaction } from './entities/transaction.entity';
 
@@ -47,10 +48,12 @@ export class TransactionsService {
         return await this.operateBalance(id, replenishBalanceDto, false);
     }
 
-    async findAllAccountTransactions(id: number) {
-        const account = await this.accountService.findOne(1);
+    async findAllAccountTransactions(id: number, paginationQuery: PaginationQueryDto) {
+        const account = await this.accountService.findOne(id);
 
         return await this.transactionRepository.find({
+            take: paginationQuery.limit,
+            skip: paginationQuery.offset,
             where: { account: account },
             relations: { account: true }
         });
