@@ -13,8 +13,13 @@ export class TransactionsController {
         return this.transactionsService.findAll();
     }
 
-    @Patch(":id/balance")
+    @Patch(":id/balance/replenish")
     replenishBalance(@Param("id") id: string, @Body() replenishBalanceDto: ReplenishBalanceDto) {
         return this.transactionsService.replenishBalance(+id, replenishBalanceDto);
+    }
+    
+    @Patch(":id/balance/withdraw")
+    withdrawFromBalance(@Param("id") id: string, @Body() replenishBalanceDto: ReplenishBalanceDto) {
+        return this.transactionsService.withdrawFromBalance(+id, replenishBalanceDto);
     }
 }

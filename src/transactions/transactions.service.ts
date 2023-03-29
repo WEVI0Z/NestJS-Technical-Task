@@ -20,7 +20,7 @@ export class TransactionsService {
         });
     }
 
-    async replenishBalance(id: number, replenishBalanceDto: ReplenishBalanceDto) {
+    async operateBalance(id: number, replenishBalanceDto: ReplenishBalanceDto, addMoney: boolean = true) {
         const accountData = await this.accountRepository.findOne({
             where: {id},
             select: {balance: true}
@@ -31,7 +31,7 @@ export class TransactionsService {
         }
 
         const replenishValue = replenishBalanceDto.value;
-        const newValue = accountData.balance + replenishValue;
+        const newValue = addMoney ? accountData.balance + replenishValue : accountData.balance - replenishValue;
 
         const account = await this.accountRepository.preload({
             id: +id,
@@ -47,5 +47,13 @@ export class TransactionsService {
         this.accountRepository.save(account);
         
         return this.transactionRepository.save(transaction);
+    }
+
+    async replenishBalance(id: number, replenishBalanceDto: ReplenishBalanceDto) {
+        return await this.operateBalance(id, replenishBalanceDto);
+    }
+
+    async withdrawFromBalance(id: number, replenishBalanceDto: ReplenishBalanceDto) {
+        return await this.operateBalance(id, replenishBalanceDto, false);
     }
 }
