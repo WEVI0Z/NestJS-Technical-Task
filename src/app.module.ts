@@ -7,6 +7,7 @@ import { ClientsModule } from './clients/clients.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+import { SharedModule } from './shared/shared.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
       synchronize: true,
       namingStrategy: new SnakeNamingStrategy()
     }),
+    SharedModule,
   ],
   controllers: [AppController],
   providers: [AppService],
