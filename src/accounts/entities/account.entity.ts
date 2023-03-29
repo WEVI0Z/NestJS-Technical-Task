@@ -1,5 +1,6 @@
 import { Client } from "src/clients/entities/client.entity";
-import { Column, Entity, JoinColumn, JoinTable, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Transaction } from "src/transactions/entities/transaction.entity";
+import { Column, Entity, JoinColumn, JoinTable, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Account {
@@ -9,6 +10,9 @@ export class Account {
     @JoinColumn()
     @OneToOne(() => Client, client => client.person)
     person: Client;
+
+    @OneToMany(() => Transaction, transaction => transaction.account)
+    transactions: Transaction[]
 
     @Column({
         default: 0

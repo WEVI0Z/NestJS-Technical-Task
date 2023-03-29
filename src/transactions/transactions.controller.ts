@@ -9,8 +9,8 @@ export class TransactionsController {
     ) {}
 
     @Get()
-    get() {
-        return this.transactionsService.get();
+    findAll() {
+        return this.transactionsService.findAll();
     }
 
     @Patch(":id/balance")

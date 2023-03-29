@@ -14,8 +14,10 @@ export class TransactionsService {
         private readonly transactionRepository: Repository<Transaction>,
     ) {}
 
-    async get() {
-        return await this.transactionRepository.find();
+    async findAll() {
+        return await this.transactionRepository.find({
+            relations: { account: true }
+        });
     }
 
     async replenishBalance(id: number, replenishBalanceDto: ReplenishBalanceDto) {
@@ -24,16 +26,26 @@ export class TransactionsService {
             select: {balance: true}
         });
 
-        const account = await this.accountRepository.preload({
-            id: +id,
-            balance: accountData.balance + replenishBalanceDto.value
-        })
-        
-        if(!account) {
-            throw new NotFoundException(`Coffee #${id} not found`);
+        if(!accountData) {
+            throw new NotFoundException(`Account #${id} not found`);
         }
 
-        return this.accountRepository.save(account);
+        const replenishValue = replenishBalanceDto.value;
+        const newValue = accountData.balance + replenishValue;
+
+        const account = await this.accountRepository.preload({
+            id: +id,
+            balance: newValue,
+        });
+
+        const transaction = await this.transactionRepository.create({
+            account: account,
+            value: replenishValue,
+            transactionDate: new Date()
+        })
+
+        this.accountRepository.save(account);
+        
+        return this.transactionRepository.save(transaction);
     }
 }
-
