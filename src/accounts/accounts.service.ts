@@ -46,4 +46,8 @@ export class AccountsService {
 
         return account.balance;
     }
+
+    async blockAccount(id: number) {
+        return await this.patchAccount(id, {active: false})
+    }
 }
