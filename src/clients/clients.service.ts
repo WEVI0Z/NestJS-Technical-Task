@@ -18,7 +18,6 @@ export class ClientsService {
         return this.clientRepository.find();
     }
 
-    
     async createClientAccount(createClientAccountDto: CreateClientAccountDto) {
         const client = this.clientRepository.create(createClientAccountDto); 
 
