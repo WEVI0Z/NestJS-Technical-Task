@@ -1,18 +1,95 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { AccountsService } from '../accounts/accounts.service';
+import { Repository } from 'typeorm';
+import { Transaction } from './entities/transaction.entity';
 import { TransactionsService } from './transactions.service';
+import { Account } from '../accounts/entities/account.entity';
+import { PaginationQueryDto } from './dto/pagination-query.dto';
+import { ReplenishBalanceDto } from './dto/replenish-balance.dto';
+
+type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>
+const createMockRepository = <T = any>(): MockRepository<T> => ({
+  find: jest.fn(),
+  create: jest.fn(),
+  preload: jest.fn(),
+  findOne: jest.fn()
+})
 
 describe('TransactionsService', () => {
-  let service: TransactionsService;
+  let transactionService: TransactionsService;
+  let transactionRepository: MockRepository;
+  
+  let accountService: AccountsService;
 
   beforeEach(async () => {
+    accountService = {
+      findOne: jest.fn()
+    } as unknown as AccountsService
+
     const module: TestingModule = await Test.createTestingModule({
-      providers: [TransactionsService],
+      providers: [
+        TransactionsService,
+        { provide: getRepositoryToken(Transaction), useValue: createMockRepository() },
+        { provide: AccountsService, useValue: accountService }
+      ],
     }).compile();
 
-    service = module.get<TransactionsService>(TransactionsService);
+    transactionService = module.get<TransactionsService>(TransactionsService);
+    transactionRepository = module.get<MockRepository>(getRepositoryToken(Transaction));
+    accountService = module.get(AccountsService)
   });
 
   it('should be defined', () => {
-    expect(service).toBeDefined();
+    expect(transactionService).toBeDefined();
   });
+
+  describe('findAll', () => {
+    it('should return transactions array', async () => {
+      const expectedObject: Transaction[] = [];
+
+      transactionRepository.find.mockReturnValue([]);
+
+      const transactions = await transactionService.findAll();
+
+      expect(transactions).toEqual(expectedObject);
+    })
+  });
+
+  describe('findAllAccountTransactions', () => {
+    it('should return transactions array', async () => {
+      const id = 1;
+      const expectedObject: Transaction[] = [];
+
+      const paginationQuery: PaginationQueryDto = {offset: 0, limit: 0}
+
+      transactionRepository.find.mockReturnValue([]);
+
+      const transactions = await transactionService.findAllAccountTransactions(id, paginationQuery);
+
+      expect(transactions).toEqual(expectedObject);
+    })
+  });
+  
+  // describe('replenishBalance', () => {
+  //   it('should return new transaction', async () => {
+  //     const id = 1;
+
+  //     const replenishBalance: ReplenishBalanceDto = {
+  //       value: 34
+  //     }
+
+  //     const method = jest.spyOn(accountService, 'findOne');
+
+  //     method.mockReturnValue(new Promise(() => {return {balance: 0}}))
+
+  //     const expectedObject = {};
+
+  //     transactionRepository.create.mockReturnValue({});
+
+  //     const transactions = await transactionService.replenishBalance(id, replenishBalance);
+
+  //     expect(transactions).toEqual(expectedObject);
+  //   })
+  // })
 });

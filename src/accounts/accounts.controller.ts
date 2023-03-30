@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Patch, UseGuards } from '@nestjs/common';
 import { AccountsService } from './accounts.service';
-import { BlockedUserGuard } from './guards/blocked-user/blocked-user.guard';
+import { BlockedUserGuard } from './guards/blocked-user.guard';
 
 @Controller('accounts')
 export class AccountsController {

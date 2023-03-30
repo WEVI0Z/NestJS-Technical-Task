@@ -1,5 +1,5 @@
-import { Client } from "src/clients/entities/client.entity";
-import { Transaction } from "src/transactions/entities/transaction.entity";
+import { Client } from "../../clients/entities/client.entity";
+import { Transaction } from "../../transactions/entities/transaction.entity";
 import { Column, Entity, JoinColumn, JoinTable, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()

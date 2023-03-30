@@ -1,5 +1,4 @@
-import { Account } from "src/accounts/entities/account.entity";
-import { Client } from "src/clients/entities/client.entity";
+import { Account } from "../../accounts/entities/account.entity";
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()

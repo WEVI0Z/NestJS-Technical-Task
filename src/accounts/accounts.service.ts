@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ReplenishBalanceDto } from '../transactions/dto/replenish-balance.dto';
 import { PatchAccountDto } from './dto/patch-account.dto';
 import { Account } from './entities/account.entity';
 

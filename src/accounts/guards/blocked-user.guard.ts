@@ -1,6 +1,6 @@
 import { CanActivate, ExecutionContext, HttpException, Injectable } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { AccountsService } from 'src/accounts/accounts.service';
+import { AccountsService } from '../accounts.service';
 
 @Injectable()
 export class BlockedUserGuard implements CanActivate {

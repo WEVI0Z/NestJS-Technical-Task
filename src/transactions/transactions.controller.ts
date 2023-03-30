@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Param, Patch, Query, UseGuards } from '@nestjs/common';
-import { BlockedUserGuard } from 'src/accounts/guards/blocked-user/blocked-user.guard';
+import { BlockedUserGuard } from '../accounts/guards/blocked-user.guard';
 import { PaginationQueryDto } from './dto/pagination-query.dto';
 import { ReplenishBalanceDto } from './dto/replenish-balance.dto';
-import { BalanceRequestLimitGuard } from './guards/balance-request-limit/balance-request-limit.guard';
+import { BalanceRequestLimitGuard } from './guards/balance-request-limit.guard';
 import { TransactionsService } from './transactions.service';
 
 @Controller('transactions')

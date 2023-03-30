@@ -1,7 +1,6 @@
 import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AccountsService } from 'src/accounts/accounts.service';
-import { Account } from 'src/accounts/entities/account.entity';
+import { AccountsService } from '../accounts/accounts.service';
 import { Repository } from 'typeorm';
 import { PaginationQueryDto } from './dto/pagination-query.dto';
 import { ReplenishBalanceDto } from './dto/replenish-balance.dto';
@@ -10,8 +9,6 @@ import { Transaction } from './entities/transaction.entity';
 @Injectable()
 export class TransactionsService {
     constructor(
-        @InjectRepository(Account)
-        private readonly accountRepository: Repository<Account>,
         @InjectRepository(Transaction)
         private readonly transactionRepository: Repository<Transaction>,
         private readonly accountService: AccountsService
