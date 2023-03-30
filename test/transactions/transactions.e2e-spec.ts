@@ -21,9 +21,10 @@ describe('[Feature] Transactions (e2e)', () => {
     value: 34
   }
 
-  let clientRepository: Repository<Client>
-  let accountRepository: Repository<Account>
-  let transactionRepository: Repository<Transaction>
+  let clientRepository: Repository<Client>;
+  let accountRepository: Repository<Account>;
+  let transactionRepository: Repository<Transaction>;
+  let accountId: number;
 
   let app: INestApplication;
 
@@ -49,42 +50,66 @@ describe('[Feature] Transactions (e2e)', () => {
 
     clientRepository = moduleFixture.get('ClientRepository');
     accountRepository = moduleFixture.get('AccountRepository');
-    transactionRepository = moduleFixture.get('TransactionRepository');
+    transactionRepository = moduleFixture.get('TransactionRepository'); 
 
-    clientRepository.create(client); 
-
-    const clientRepo = clientRepository.save(client);
+    const clientRepo = clientRepository.save({
+      ...client,
+    });
 
     const clientInstance: Client = await clientRepo.then(data => data);
 
-    const account = accountRepository.create({
+    const account = await accountRepository.create({
         accountType: 0,
         person: clientInstance
     });
 
-    await accountRepository.save(account);
+    const accountInstance = await accountRepository.save(account);
+
+    accountId = accountInstance.id;
 
     await app.init();
   });
 
-  it('Find all transactions [GET /]', () => {
-    return request(app.getHttpServer())
-        .get('/transactions')
-        .expect(HttpStatus.OK)
-  });
-  it('Replenish balance [PATCH /:id/balance/replenish]', () => {
-    return request(app.getHttpServer())
-        .patch('/transactions/1/balance/replenish')
-        .send(balance as ReplenishBalanceDto)
-        .expect(HttpStatus.OK)
+  describe('Find all transactions [GET /]', () => {
+    it('should return OK status', () => {
+      return request(app.getHttpServer())
+          .get('/transactions')
+          .expect(HttpStatus.OK)
+    });
   })
-  it('Find all account transactions [GET /:id]', () => {
-    return request(app.getHttpServer())
-        .get('/transactions/1')
-        .expect(HttpStatus.OK)
-  });
-  it.todo('Create [UPDATE ONE /:id]');
-  it.todo('Create [DELETE ONE /:id]');
+
+  describe('Replenish balance [PATCH /:id/balance/replenish]', () => {
+    it('should return OK status', () => {
+      return request(app.getHttpServer())
+          .patch(`/transactions/${accountId}/balance/replenish`)
+          .send(balance as ReplenishBalanceDto)
+          .expect(HttpStatus.OK)
+    })
+  })
+
+  describe('Find all account transactions [GET /:id]', () => {
+    it('Should return OK status', () => {
+      return request(app.getHttpServer())
+          .get(`/transactions/${accountId}`)
+          .expect(HttpStatus.OK)
+    });
+  })
+
+  describe('Withdraw from balance [PATCH /:id/balance/replenish]', () => {
+    it('Should return OK status', () => {
+      return request(app.getHttpServer())
+          .patch(`/transactions/${accountId}/balance/withdraw`)
+          .send(balance as ReplenishBalanceDto)
+          .expect(HttpStatus.OK)
+    })
+
+    it('Should return CONFLICT status', () => {
+      return request(app.getHttpServer())
+          .patch(`/transactions/${accountId}/balance/withdraw`)
+          .send(balance as ReplenishBalanceDto)
+          .expect(HttpStatus.CONFLICT)
+    })
+  })
   
   afterAll(async () => {
     await transactionRepository.remove(await transactionRepository.find())
