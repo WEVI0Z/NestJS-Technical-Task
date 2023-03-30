@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
+import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
 import { AccountsService } from '../accounts/accounts.service';
 import { Repository } from 'typeorm';
 import { Transaction } from './entities/transaction.entity';
@@ -7,37 +7,54 @@ import { TransactionsService } from './transactions.service';
 import { Account } from '../accounts/entities/account.entity';
 import { PaginationQueryDto } from './dto/pagination-query.dto';
 import { ReplenishBalanceDto } from './dto/replenish-balance.dto';
+import { Client } from 'src/clients/entities/client.entity';
 
 type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>
 const createMockRepository = <T = any>(): MockRepository<T> => ({
   find: jest.fn(),
   create: jest.fn(),
   preload: jest.fn(),
-  findOne: jest.fn()
+  findOne: jest.fn(),
+  save: jest.fn()
 })
+
+const mockBalance = {balance: 0};
+
+const mockClient = {
+  id: 1,
+  name: 'Test',
+  document: 'Test',
+  birthDate: new Date(),
+}
+
+const mockAccount = {
+  id: 1,
+  accountType: 0
+}
 
 describe('TransactionsService', () => {
   let transactionService: TransactionsService;
   let transactionRepository: MockRepository;
-  
-  let accountService: AccountsService;
+  let accountsRepository: MockRepository;
+  let accountsService: AccountsService;
 
   beforeEach(async () => {
-    accountService = {
-      findOne: jest.fn()
-    } as unknown as AccountsService
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         TransactionsService,
         { provide: getRepositoryToken(Transaction), useValue: createMockRepository() },
-        { provide: AccountsService, useValue: accountService }
+        { provide: getRepositoryToken(Account), useValue: createMockRepository() },
+        { provide: AccountsService, useValue: {
+          findOne: jest.fn(() => mockBalance),
+          patchAccount: jest.fn(async () => mockAccount),
+        } },
       ],
     }).compile();
 
     transactionService = module.get<TransactionsService>(TransactionsService);
     transactionRepository = module.get<MockRepository>(getRepositoryToken(Transaction));
-    accountService = module.get(AccountsService)
+    accountsService = module.get(AccountsService)
   });
 
   it('should be defined', () => {
@@ -71,25 +88,22 @@ describe('TransactionsService', () => {
     })
   });
   
-  // describe('replenishBalance', () => {
-  //   it('should return new transaction', async () => {
-  //     const id = 1;
+  describe('replenishBalance', () => {
+    it('should return new transaction', async () => {
+      const id = 1;
 
-  //     const replenishBalance: ReplenishBalanceDto = {
-  //       value: 34
-  //     }
+      const replenishBalance: ReplenishBalanceDto = {
+        value: 34
+      }
 
-  //     const method = jest.spyOn(accountService, 'findOne');
+      const expectedObject = {};
 
-  //     method.mockReturnValue(new Promise(() => {return {balance: 0}}))
+      transactionRepository.create.mockReturnValue({});
+      transactionRepository.save.mockReturnValue({});
 
-  //     const expectedObject = {};
+      const transactions = await transactionService.replenishBalance(id, replenishBalance);
 
-  //     transactionRepository.create.mockReturnValue({});
-
-  //     const transactions = await transactionService.replenishBalance(id, replenishBalance);
-
-  //     expect(transactions).toEqual(expectedObject);
-  //   })
-  // })
+      expect(transactions).toEqual(expectedObject);
+    })
+  })
 });

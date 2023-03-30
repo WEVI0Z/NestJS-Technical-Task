@@ -17,7 +17,7 @@ export class AccountsService {
         });
     }
 
-    async findOne(id: number) {
+    async findOne(id: number): Promise<Account> {
         const account = await this.accountRepository.findOneBy({ id });
 
         if(!account) {
