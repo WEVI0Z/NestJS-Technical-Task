@@ -1,8 +1,7 @@
 import { CanActivate, ExecutionContext, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { AccountsService } from 'src/accounts/accounts.service';
-import { Transaction } from 'src/transactions/entities/transaction.entity';
-import { TransactionsService } from 'src/transactions/transactions.service';
+import { AccountsService } from '../../accounts/accounts.service';
+import { TransactionsService } from '../../transactions/transactions.service';
 
 @Injectable()
 export class BalanceRequestLimitGuard implements CanActivate {
