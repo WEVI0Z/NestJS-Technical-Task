@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
+import { getRepositoryToken } from '@nestjs/typeorm';
 import { AccountsService } from '../accounts/accounts.service';
 import { Repository } from 'typeorm';
 import { Transaction } from './entities/transaction.entity';
@@ -8,6 +8,7 @@ import { Account } from '../accounts/entities/account.entity';
 import { PaginationQueryDto } from './dto/pagination-query.dto';
 import { ReplenishBalanceDto } from './dto/replenish-balance.dto';
 import { HttpException } from '@nestjs/common';
+import { TransactionsController } from './transactions.controller';
 
 type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>
 const createMockRepository = <T = any>(): MockRepository<T> => ({
@@ -20,13 +21,6 @@ const createMockRepository = <T = any>(): MockRepository<T> => ({
 
 const mockBalance = {balance: 34};
 
-const mockClient = {
-  id: 1,
-  name: 'Test',
-  document: 'Test',
-  birthDate: new Date(),
-}
-
 const mockAccount = {
   id: 1,
   accountType: 0
@@ -35,14 +29,14 @@ const mockAccount = {
 describe('TransactionsService', () => {
   let transactionService: TransactionsService;
   let transactionRepository: MockRepository;
-  let accountsRepository: MockRepository;
-  let accountsService: AccountsService;
+  let transactionsController: TransactionsController;
 
   beforeEach(async () => {
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         TransactionsService,
+        TransactionsController,
         { provide: getRepositoryToken(Transaction), useValue: createMockRepository() },
         { provide: getRepositoryToken(Account), useValue: createMockRepository() },
         { provide: AccountsService, useValue: {
@@ -54,7 +48,7 @@ describe('TransactionsService', () => {
 
     transactionService = module.get<TransactionsService>(TransactionsService);
     transactionRepository = module.get<MockRepository>(getRepositoryToken(Transaction));
-    accountsService = module.get(AccountsService)
+    transactionsController = module.get<TransactionsController>(TransactionsController);
   });
 
   it('should be defined', () => {
@@ -67,7 +61,7 @@ describe('TransactionsService', () => {
 
       transactionRepository.find.mockReturnValue([]);
 
-      const transactions = await transactionService.findAll();
+      const transactions = await transactionsController.findAll();
 
       expect(transactions).toEqual(expectedObject);
     })
@@ -82,7 +76,7 @@ describe('TransactionsService', () => {
 
       transactionRepository.find.mockReturnValue([]);
 
-      const transactions = await transactionService.findAllAccountTransactions(id, paginationQuery);
+      const transactions = await transactionsController.findAllAccountTransactions(id + '', paginationQuery);
 
       expect(transactions).toEqual(expectedObject);
     })
@@ -101,7 +95,7 @@ describe('TransactionsService', () => {
       transactionRepository.create.mockReturnValue({});
       transactionRepository.save.mockReturnValue({});
 
-      const transactions = await transactionService.replenishBalance(id, replenishBalance);
+      const transactions = await transactionsController.replenishBalance(id + '', replenishBalance);
 
       expect(transactions).toEqual(expectedObject);
     })
@@ -121,7 +115,7 @@ describe('TransactionsService', () => {
         transactionRepository.create.mockReturnValue({});
         transactionRepository.save.mockReturnValue({});
 
-        const transactions = await transactionService.withdrawFromBalance(id, replenishBalance);
+        const transactions = await transactionsController.withdrawFromBalance(id + '', replenishBalance);
 
         expect(transactions).toEqual(expectedObject);
       })
@@ -135,13 +129,11 @@ describe('TransactionsService', () => {
           value: 35
         }
 
-        const expectedObject = {};
-
         transactionRepository.create.mockReturnValue({});
         transactionRepository.save.mockReturnValue({});
 
         try {
-          await transactionService.withdrawFromBalance(id, replenishBalance);
+          await transactionsController.withdrawFromBalance(id + '', replenishBalance);
         } catch(err) {
           expect(err).toBeInstanceOf(HttpException);
           expect(err.message).toEqual(`Not enough money on the Account's balance to complete the transaction`)          

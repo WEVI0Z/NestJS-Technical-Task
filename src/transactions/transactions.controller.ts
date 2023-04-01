@@ -4,6 +4,7 @@ import { PaginationQueryDto } from './dto/pagination-query.dto';
 import { ReplenishBalanceDto } from './dto/replenish-balance.dto';
 import { BalanceRequestLimitGuard } from './guards/balance-request-limit.guard';
 import { TransactionsService } from './transactions.service';
+import { Transaction } from './entities/transaction.entity';
 
 @Controller('transactions')
 export class TransactionsController {
@@ -12,7 +13,7 @@ export class TransactionsController {
     ) {}
 
     @Get()
-    findAll() {
+    findAll(): Promise<Transaction[]> {
         return this.transactionsService.findAll();
     }
 
@@ -21,7 +22,7 @@ export class TransactionsController {
     findAllAccountTransactions(
         @Param("id") id: string, 
         @Query() paginationQuery: PaginationQueryDto
-    ) {
+    ): Promise<Transaction[]> {
         return this.transactionsService.findAllAccountTransactions(+id, paginationQuery);
     }
 
@@ -31,7 +32,7 @@ export class TransactionsController {
     replenishBalance(
         @Param("id") id: string,
         @Body() replenishBalanceDto: ReplenishBalanceDto
-    ) {
+    ): Promise<Transaction> {
         return this.transactionsService.replenishBalance(+id, replenishBalanceDto);
     }
     
@@ -41,7 +42,7 @@ export class TransactionsController {
     withdrawFromBalance(
         @Param("id") id: string,
         @Body() replenishBalanceDto: ReplenishBalanceDto
-    ) {
+    ): Promise<Transaction> {
         return this.transactionsService.withdrawFromBalance(+id, replenishBalanceDto);
     }
 }
