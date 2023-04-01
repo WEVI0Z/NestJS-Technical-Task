@@ -21,13 +21,11 @@ export class ClientsService {
     async createClientAccount(createClientAccountDto: CreateClientAccountDto) {
         const client = this.clientRepository.create(createClientAccountDto); 
 
-        const clientRepo = this.clientRepository.save(client);
-
-        const clientInstance: Client = await clientRepo.then(data => data);
+        const clientRepo = await this.clientRepository.save(client);
 
         const account = this.accountRepository.create({
             accountType: 0,
-            person: clientInstance
+            person: clientRepo
         });
 
         return this.accountRepository.save(account);

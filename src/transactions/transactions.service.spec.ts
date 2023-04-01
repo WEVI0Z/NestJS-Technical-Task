@@ -20,13 +20,6 @@ const createMockRepository = <T = any>(): MockRepository<T> => ({
 
 const mockBalance = {balance: 34};
 
-const mockClient = {
-  id: 1,
-  name: 'Test',
-  document: 'Test',
-  birthDate: new Date(),
-}
-
 const mockAccount = {
   id: 1,
   accountType: 0
@@ -35,8 +28,6 @@ const mockAccount = {
 describe('TransactionsService', () => {
   let transactionService: TransactionsService;
   let transactionRepository: MockRepository;
-  let accountsRepository: MockRepository;
-  let accountsService: AccountsService;
 
   beforeEach(async () => {
 
@@ -54,7 +45,6 @@ describe('TransactionsService', () => {
 
     transactionService = module.get<TransactionsService>(TransactionsService);
     transactionRepository = module.get<MockRepository>(getRepositoryToken(Transaction));
-    accountsService = module.get(AccountsService)
   });
 
   it('should be defined', () => {
