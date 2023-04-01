@@ -8,6 +8,7 @@ import { Account } from '../accounts/entities/account.entity';
 import { PaginationQueryDto } from './dto/pagination-query.dto';
 import { ReplenishBalanceDto } from './dto/replenish-balance.dto';
 import { Client } from 'src/clients/entities/client.entity';
+import { HttpException } from '@nestjs/common';
 
 type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>
 const createMockRepository = <T = any>(): MockRepository<T> => ({
@@ -18,7 +19,7 @@ const createMockRepository = <T = any>(): MockRepository<T> => ({
   save: jest.fn()
 })
 
-const mockBalance = {balance: 0};
+const mockBalance = {balance: 34};
 
 const mockClient = {
   id: 1,
@@ -106,4 +107,47 @@ describe('TransactionsService', () => {
       expect(transactions).toEqual(expectedObject);
     })
   })
+
+  describe('withdrawBalance', () => {
+    describe('when there is anouth money on the balance', () => {
+      it('should return new transaction', async () => {
+        const id = 1;
+
+        const replenishBalance: ReplenishBalanceDto = {
+          value: 0
+        }
+
+        const expectedObject = {};
+
+        transactionRepository.create.mockReturnValue({});
+        transactionRepository.save.mockReturnValue({});
+
+        const transactions = await transactionService.withdrawFromBalance(id, replenishBalance);
+
+        expect(transactions).toEqual(expectedObject);
+      })
+    })
+
+    describe('otherwise', () => {
+      it('should return http exception', async () => {
+        const id = 1;
+
+        const replenishBalance: ReplenishBalanceDto = {
+          value: 35
+        }
+
+        const expectedObject = {};
+
+        transactionRepository.create.mockReturnValue({});
+        transactionRepository.save.mockReturnValue({});
+
+        try {
+          await transactionService.withdrawFromBalance(id, replenishBalance);
+        } catch(err) {
+          expect(err).toBeInstanceOf(HttpException);
+          expect(err.message).toEqual(`Not enough money on the Account's balance to complete the transaction`)          
+        }
+      })
+    })
+  });
 });
