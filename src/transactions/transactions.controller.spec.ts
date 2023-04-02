@@ -52,7 +52,7 @@ describe('TransactionsService', () => {
   });
 
   it('should be defined', () => {
-    expect(transactionService).toBeDefined();
+    expect(transactionsController).toBeDefined();
   });
 
   describe('findAll', () => {
