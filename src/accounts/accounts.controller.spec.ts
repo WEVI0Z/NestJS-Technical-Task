@@ -4,7 +4,6 @@ import { Repository } from 'typeorm';
 import { AccountsService } from './accounts.service';
 import { Account } from './entities/account.entity';
 import { HttpException } from '@nestjs/common';
-import { PatchAccountDto } from './dto/patch-account.dto';
 import { AccountsController } from './accounts.controller';
 
 type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>

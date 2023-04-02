@@ -25,7 +25,7 @@ export class AccountsController {
         return this.accountsService.getBalance(+id);
     }
 
-    @Get(":id/block")
+    @Patch(":id/block")
     blockAccount(@Param("id") id: string) {
         return this.accountsService.blockAccount(+id);
     }
