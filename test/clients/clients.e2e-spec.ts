@@ -18,7 +18,6 @@ describe('[Feature] Clients (e2e)', () => {
   let clientRepository: Repository<Client>;
   let accountRepository: Repository<Account>;
   let transactionRepository: Repository<Transaction>;
-  let accountId: number;
 
   let app: INestApplication;
 
@@ -56,9 +55,7 @@ describe('[Feature] Clients (e2e)', () => {
         person: clientInstance
     });
 
-    const accountInstance = await accountRepository.save(account);
-
-    accountId = clientInstance.id;
+    await accountRepository.save(account);
 
     await app.init();
   });

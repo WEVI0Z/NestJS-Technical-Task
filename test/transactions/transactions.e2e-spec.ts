@@ -1,11 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { Body, HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
+import { HttpStatus, INestApplication } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as request from 'supertest';
 import { TransactionsModule } from '../../src/transactions/transactions.module';
-import { CreateClientAccountDto } from '../../src/clients/dto/create-client-account.dto';
 import { ReplenishBalanceDto } from '../../src/transactions/dto/replenish-balance.dto';
-import { DataSource, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Client } from '../../src/clients/entities/client.entity';
 import { Account } from '../../src/accounts/entities/account.entity';
 import { Transaction } from '../../src/transactions/entities/transaction.entity';
