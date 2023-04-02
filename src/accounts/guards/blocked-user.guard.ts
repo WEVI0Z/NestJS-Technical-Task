@@ -1,4 +1,4 @@
-import { CanActivate, ExecutionContext, HttpException, Injectable } from '@nestjs/common';
+import { CanActivate, ExecutionContext, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { AccountsService } from '../accounts.service';
 
@@ -21,7 +21,7 @@ export class BlockedUserGuard implements CanActivate {
       if(account.active){
         return account.active;
       } else {
-        throw new HttpException(`Account #${id} is banned`, 403)
+        throw new HttpException(`Account #${id} is banned`, HttpStatus.FORBIDDEN)
       }
     });
   }

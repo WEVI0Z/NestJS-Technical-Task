@@ -96,18 +96,22 @@ describe('[Feature] Transactions (e2e)', () => {
   })
 
   describe('Withdraw from balance [PATCH /:id/balance/replenish]', () => {
-    it('Should return OK status', () => {
-      return request(app.getHttpServer())
-          .patch(`/transactions/${accountId}/balance/withdraw`)
-          .send(balance as ReplenishBalanceDto)
-          .expect(HttpStatus.OK)
+    describe('when there is anouth money', () => {
+      it('Should return OK status', () => {
+        return request(app.getHttpServer())
+            .patch(`/transactions/${accountId}/balance/withdraw`)
+            .send(balance as ReplenishBalanceDto)
+            .expect(HttpStatus.OK)
+      })
     })
-
-    it('Should return CONFLICT status', () => {
-      return request(app.getHttpServer())
-          .patch(`/transactions/${accountId}/balance/withdraw`)
-          .send(balance as ReplenishBalanceDto)
-          .expect(HttpStatus.CONFLICT)
+    
+    describe('otherwise', () => {
+      it('Should return CONFLICT status', () => {
+        return request(app.getHttpServer())
+            .patch(`/transactions/${accountId}/balance/withdraw`)
+            .send(balance as ReplenishBalanceDto)
+            .expect(HttpStatus.CONFLICT)
+      })
     })
   })
   
