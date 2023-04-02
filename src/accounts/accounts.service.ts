@@ -11,7 +11,7 @@ export class AccountsService {
         private readonly accountRepository: Repository<Account>
     ) {}
 
-    async findAll() {
+    async findAll(): Promise<Account[]> {
         return await this.accountRepository.find({
             relations: ['person']
         });
@@ -27,7 +27,7 @@ export class AccountsService {
         return account;
     }
 
-    async patchAccount(id: number, patchAccountDto: PatchAccountDto) {
+    async patchAccount(id: number, patchAccountDto: PatchAccountDto): Promise<Account> {
         const account = await this.accountRepository.preload({
             id: id,
             ...patchAccountDto
@@ -40,13 +40,13 @@ export class AccountsService {
         return this.accountRepository.save(account);
     }
 
-    async getBalance(id: number) {
-        const account = await this.accountRepository.findOneBy({id})
+    async getBalance(id: number): Promise<number> {
+        const account = await this.findOne(id);
 
         return account.balance;
     }
 
-    async blockAccount(id: number) {
+    async blockAccount(id: number): Promise<Account> {
         return await this.patchAccount(id, {active: false})
     }
 }
