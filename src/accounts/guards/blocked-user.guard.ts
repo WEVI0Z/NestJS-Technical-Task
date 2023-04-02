@@ -15,7 +15,7 @@ export class BlockedUserGuard implements CanActivate {
 
     const params = request.params;
 
-    const id = params.id;
+    const id = params.accountId;
 
     return this.accountService.findOne(id).then(account => {
       if(account.active){

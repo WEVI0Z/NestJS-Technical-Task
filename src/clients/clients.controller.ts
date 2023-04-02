@@ -1,7 +1,10 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Post } from '@nestjs/common';
 import { ClientsService } from './clients.service';
 import { CreateClientAccountDto } from './dto/create-client-account.dto';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Account } from 'src/accounts/entities/account.entity';
 
+@ApiTags('Clients')
 @Controller('clients')
 export class ClientsController {
     constructor(
@@ -9,11 +12,15 @@ export class ClientsController {
     ) {}
 
     @Get()
+    @ApiOperation({summary: 'Returns array of clients'})
+    @ApiResponse({status: HttpStatus.OK, description: "Success", type: Array})
     findAll() {
         return this.clientsService.findAll();
     }
 
     @Post()
+    @ApiOperation({summary: 'Returns and creates an account and a connected to it client'})
+    @ApiResponse({status: HttpStatus.OK, description: "Success", type: Account})
     createClientAccount(@Body() createClientAccountDto: CreateClientAccountDto) {
         return this.clientsService.createClientAccount(createClientAccountDto);
     }
