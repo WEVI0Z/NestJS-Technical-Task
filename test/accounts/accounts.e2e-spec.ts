@@ -8,11 +8,15 @@ import { Client } from '../../src/clients/entities/client.entity';
 import { Account } from '../../src/accounts/entities/account.entity';
 import { Transaction } from '../../src/transactions/entities/transaction.entity';
 
-describe('[Feature] Clients (e2e)', () => {
+describe('[Feature] Accounts (e2e)', () => {
   const client = {
-      name: "Wevioz",
-      document: "KH0403240",
-      birthDate: new Date()
+    name: "Wevioz",
+    document: "KH0403240",
+    birthDate: new Date()
+  }
+
+  const balance = {
+    value: 34
   }
 
   let clientRepository: Repository<Client>;
@@ -44,7 +48,8 @@ describe('[Feature] Clients (e2e)', () => {
 
     clientRepository = moduleFixture.get('ClientRepository');
     accountRepository = moduleFixture.get('AccountRepository');
-    transactionRepository = moduleFixture.get('TransactionRepository');
+    transactionRepository = moduleFixture.get('TransactionRepository'); 
+
     const clientRepo = clientRepository.save({
       ...client,
     });
@@ -58,28 +63,43 @@ describe('[Feature] Clients (e2e)', () => {
 
     const accountInstance = await accountRepository.save(account);
 
-    accountId = clientInstance.id;
+    accountId = accountInstance.id;
 
     await app.init();
   });
 
-  describe('Find all clients [GET /]', () => {
+  describe('Find all accounts [GET /]', () => {
     it('should return OK status', () => {
       return request(app.getHttpServer())
-          .get('/clients')
+          .get('/accounts')
           .expect(HttpStatus.OK)
     });
   })
 
-  describe('Create a client [POST /]', () => {
-    it('should return CREATED status', () => {
+  describe('Find an account [GET /:id]', () => {
+    it('should return OK status', () => {
       return request(app.getHttpServer())
-          .post('/clients')
-          .send(client as Client)
-          .expect(HttpStatus.CREATED)
-    });
+          .get(`/accounts/${accountId}`)
+          .expect(HttpStatus.OK)
+    })
   })
 
+  describe('Find an account\'s balance [GET /:id/balance]', () => {
+    it('should return OK status', () => {
+      return request(app.getHttpServer())
+          .get(`/accounts/${accountId}/balance`)
+          .expect(HttpStatus.OK)
+    })
+  })
+
+  describe('Block an account [GET /:id/block]', () => {
+    it('should return OK status', () => {
+      return request(app.getHttpServer())
+          .get(`/accounts/${accountId}/block`)
+          .expect(HttpStatus.OK)
+    })
+  })
+  
   afterAll(async () => {
     await transactionRepository.remove(await transactionRepository.find())
     await accountRepository.remove(await accountRepository.find())
