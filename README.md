@@ -35,8 +35,16 @@ $ npm run test:cov
 ```
 
 ## Database
-
-You can easily build database using docker-compose setup, situated in the project
+step 1: create .env file
+step 2: create database constants
+```bash
+DATABASE_USER=
+DATABASE_PASSWORD=
+DATABASE_NAME=
+DATABASE_PORT=
+DATABASE_HOST=
+```
+step 3: docker-compose up
 
 ## Swagger
 
