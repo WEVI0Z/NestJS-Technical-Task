@@ -2,7 +2,7 @@ import { Body, Controller, Get, HttpStatus, Post } from '@nestjs/common';
 import { ClientsService } from './clients.service';
 import { CreateClientAccountDto } from './dto/create-client-account.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Account } from 'src/accounts/entities/account.entity';
+import { Account } from '../accounts/entities/account.entity';
 
 @ApiTags('Clients')
 @Controller('clients')
