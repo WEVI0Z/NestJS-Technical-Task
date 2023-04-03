@@ -35,8 +35,8 @@ $ npm run test:cov
 ```
 
 ## Database
-step 1: create .env file
-step 2: create database constants
+###step 1: create .env file
+###step 2: create database constants
 ```bash
 DATABASE_USER=
 DATABASE_PASSWORD=
@@ -44,7 +44,16 @@ DATABASE_NAME=
 DATABASE_PORT=
 DATABASE_HOST=
 ```
-step 3: docker-compose up
+example for the database in the docker-compose.yml file:
+```bash
+DATABASE_USER=postgres
+DATABASE_PASSWORD=pass123
+DATABASE_NAME=postgres
+DATABASE_PORT=5432
+DATABASE_HOST=localhost
+```
+
+###step 3: docker-compose up
 
 ## Swagger
 
