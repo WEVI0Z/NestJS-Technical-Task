@@ -57,4 +57,4 @@ DATABASE_HOST=localhost
 
 ## Swagger
 
-The address of the swagger is web-site-src/api 
+The address of the swagger is web-site-url/api 
