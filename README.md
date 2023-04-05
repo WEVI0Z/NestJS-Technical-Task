@@ -52,9 +52,16 @@ DATABASE_NAME=postgres
 DATABASE_PORT=5432
 DATABASE_HOST=localhost
 ```
+to create the database for e2e test use
+```bash
+docker-compose up test
+```
 
-### step 3: docker-compose up
+### step 3:
+```bash
+docker-compose up
+```
 
 ## Swagger
 
-The address of the swagger is web-site-src/api 
+The address of the swagger is web-site-url/api 
