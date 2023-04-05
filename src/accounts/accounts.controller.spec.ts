@@ -83,11 +83,11 @@ describe('AccountsService', () => {
             });
     
             try {
-            await controller.findOne('1');
+              await controller.findOne('1');
             } catch(err) {
-            expect(err).toBeInstanceOf(HttpException);
-            expect(err.status).toBe(403);
-            expect(err.message).toBe('Account #1 is banned');
+              expect(err).toBeInstanceOf(HttpException);
+              expect(err.status).toBe(403);
+              expect(err.message).toBe('Account #1 is banned');
             }
         })
     })
