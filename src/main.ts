@@ -4,6 +4,7 @@ import { AccountsModule } from "./accounts/accounts.module";
 import { AppModule } from "./app.module";
 import { ClientsModule } from "./clients/clients.module";
 import { TransactionsModule } from "./transactions/transactions.module";
+import { ValidationPipe } from "@nestjs/common";
 
 function connectSwagger(app) {
   const config = new DocumentBuilder()
@@ -23,6 +24,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   connectSwagger(app);
+
+  app.useGlobalPipes(new ValidationPipe());
 
   app.enableCors();
 

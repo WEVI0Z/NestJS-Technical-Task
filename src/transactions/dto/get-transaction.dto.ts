@@ -1,8 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Account } from "../../accounts/entities/account.entity";
-import { Column, Entity } from "typeorm";
 
-@Entity()
 export class GetTransaction {
     @ApiProperty()
     id: number;
@@ -13,7 +11,6 @@ export class GetTransaction {
     @ApiProperty()
     value: number;
 
-    @Column()
     @ApiProperty()
     transactionDate: Date;
 }
