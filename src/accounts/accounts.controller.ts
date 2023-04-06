@@ -25,7 +25,7 @@ export class AccountsController {
     @ApiResponse({status: HttpStatus.NOT_FOUND, description: "Account not found exception"})
     @ApiResponse({status: HttpStatus.FORBIDDEN, description: "Account is banned guard"})
     findOne(@Param("accountId", ParseIntPipe) id: number): Promise<GetAccountDto> {
-        return this.accountsService.findOne(+id);
+        return this.accountsService.findOne(id);
     }
 
     @UseGuards(BlockedUserGuard)
@@ -35,13 +35,13 @@ export class AccountsController {
     @ApiResponse({status: HttpStatus.NOT_FOUND, description: "Account not found exception"})
     @ApiResponse({status: HttpStatus.FORBIDDEN, description: "Account is banned guard"})
     getBalance(@Param("accountId", ParseIntPipe) id: number): Promise<number> {
-        return this.accountsService.getBalance(+id);
+        return this.accountsService.getBalance(id);
     }
 
     @Patch(":accountId/block")
     @ApiOperation({summary: "Returns and blocks the account"})
     @ApiResponse({status: HttpStatus.OK, description: "Success", type: GetAccountDto})
     blockAccount(@Param("accountId", ParseIntPipe) id: number): Promise<GetAccountDto> {
-        return this.accountsService.blockAccount(+id);
+        return this.accountsService.blockAccount(id);
     }
 }

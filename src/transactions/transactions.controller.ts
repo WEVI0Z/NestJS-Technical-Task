@@ -31,7 +31,7 @@ export class TransactionsController {
         @Param("accountId", ParseIntPipe) id: number, 
         @Query() paginationQuery: PaginationQueryDto
     ): Promise<GetTransactionDto[]> {
-        return this.transactionsService.findAllAccountTransactions(+id, paginationQuery);
+        return this.transactionsService.findAllAccountTransactions(id, paginationQuery);
     }
 
     @UseGuards(BlockedUserGuard)
@@ -45,7 +45,7 @@ export class TransactionsController {
         @Param("accountId", ParseIntPipe) id: number,
         @Body() replenishBalanceDto: ReplenishBalanceDto
     ): Promise<GetTransactionDto> {
-        return this.transactionsService.replenishBalance(+id, replenishBalanceDto);
+        return this.transactionsService.replenishBalance(id, replenishBalanceDto);
     }
     
     @UseGuards(BlockedUserGuard)
@@ -59,6 +59,6 @@ export class TransactionsController {
         @Param("accountId", ParseIntPipe) id: number,
         @Body() replenishBalanceDto: ReplenishBalanceDto
     ): Promise<GetTransactionDto> {
-        return this.transactionsService.withdrawFromBalance(+id, replenishBalanceDto);
+        return this.transactionsService.withdrawFromBalance(id, replenishBalanceDto);
     }
 }

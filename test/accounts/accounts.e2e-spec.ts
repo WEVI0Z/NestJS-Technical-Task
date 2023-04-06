@@ -92,10 +92,10 @@ describe("[Feature] Accounts (e2e)", () => {
     })
   })
 
-  describe("Block an account [GET /:id/block]", () => {
+  describe("Block an account [PATCH /:id/block]", () => {
     it("should return OK status", () => {
       return request(app.getHttpServer())
-          .get(`/accounts/${accountId}/block`)
+          .patch(`/accounts/${accountId}/block`)
           .expect(HttpStatus.OK)
     })
   })
