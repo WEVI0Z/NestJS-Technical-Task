@@ -58,7 +58,7 @@ describe("AccountsService", () => {
   
         accountRepository.findOne.mockReturnValue({});
   
-        const accounts = await controller.findOne("1");
+        const accounts = await controller.findOne(1);
   
         expect(accounts).toEqual(expectedObject);
       });
@@ -69,7 +69,7 @@ describe("AccountsService", () => {
         accountRepository.findOne.mockReturnValue(undefined);
   
         try {
-          await controller.findOne("1");
+          await controller.findOne(1);
         } catch(err) {
           expect(err).toBeInstanceOf(HttpException);
         }
@@ -83,7 +83,7 @@ describe("AccountsService", () => {
           });
   
           try {
-            await controller.findOne("1");
+            await controller.findOne(1);
           } catch(err) {
             expect(err).toBeInstanceOf(HttpException);
             expect(err.status).toBe(403);
@@ -100,7 +100,7 @@ describe("AccountsService", () => {
           balance: 0
         });
   
-        const balance = await controller.getBalance("1");
+        const balance = await controller.getBalance(1);
   
         expect(typeof balance).toBe("number");
       });
@@ -111,7 +111,7 @@ describe("AccountsService", () => {
         accountRepository.findOne.mockReturnValue(undefined);
   
         try {
-          await controller.getBalance("1");
+          await controller.getBalance(1);
         } catch(err) {
           expect(err).toBeInstanceOf(HttpException);
         }
@@ -127,7 +127,7 @@ describe("AccountsService", () => {
         accountRepository.preload.mockReturnValue({});
         accountRepository.save.mockReturnValue({});
 
-        const account = await controller.blockAccount("1");
+        const account = await controller.blockAccount(1);
 
         expect(account).toEqual(expectedObject);
       });
@@ -138,7 +138,7 @@ describe("AccountsService", () => {
         accountRepository.preload.mockReturnValue(undefined);
 
         try {
-          await controller.blockAccount("1");
+          await controller.blockAccount(1);
         } catch(err) {
           expect(err).toBeInstanceOf(HttpException);
         }

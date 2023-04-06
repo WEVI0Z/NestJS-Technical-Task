@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Account } from "../../accounts/entities/account.entity";
 
-export class GetTransaction {
+export class GetTransactionDto {
     @ApiProperty()
     id: number;
 

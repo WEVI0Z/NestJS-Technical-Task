@@ -78,7 +78,7 @@ describe("TransactionsService", () => {
 
       transactionRepository.find.mockReturnValue([]);
 
-      const transactions = await transactionsController.findAllAccountTransactions(id + "", paginationQuery);
+      const transactions = await transactionsController.findAllAccountTransactions(id, paginationQuery);
 
       expect(transactions).toEqual(expectedObject);
     });
@@ -97,7 +97,7 @@ describe("TransactionsService", () => {
       transactionRepository.create.mockReturnValue({});
       transactionRepository.save.mockReturnValue({});
 
-      const transactions = await transactionsController.replenishBalance(id + "", replenishBalance);
+      const transactions = await transactionsController.replenishBalance(id, replenishBalance);
 
       expect(transactions).toEqual(expectedObject);
     });
@@ -117,7 +117,7 @@ describe("TransactionsService", () => {
         transactionRepository.create.mockReturnValue({});
         transactionRepository.save.mockReturnValue({});
 
-        const transactions = await transactionsController.withdrawFromBalance(id + "", replenishBalance);
+        const transactions = await transactionsController.withdrawFromBalance(id, replenishBalance);
 
         expect(transactions).toEqual(expectedObject);
       });
@@ -135,7 +135,7 @@ describe("TransactionsService", () => {
         transactionRepository.save.mockReturnValue({});
 
         try {
-          await transactionsController.withdrawFromBalance(id + "", replenishBalance);
+          await transactionsController.withdrawFromBalance(id, replenishBalance);
         } catch(err) {
           expect(err).toBeInstanceOf(HttpException);
           expect(err.message).toEqual(`Not enough money on the Account's balance to complete the transaction`) ;         

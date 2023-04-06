@@ -1,8 +1,7 @@
-import { Controller, Get, HttpStatus, Param, Patch, UseGuards } from "@nestjs/common";
+import { Controller, Get, HttpStatus, Param, ParseIntPipe, Patch, UseGuards } from "@nestjs/common";
 import { AccountsService } from "./accounts.service";
 import { BlockedUserGuard } from "./guards/blocked-user.guard";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
-import { Account } from "./entities/account.entity";
 import { GetAccountDto } from "./dto/get-account.dto";
 
 @ApiTags("Accounts")
@@ -15,7 +14,7 @@ export class AccountsController {
     @Get()
     @ApiOperation({summary: "Returns all accounts"})
     @ApiResponse({status: HttpStatus.OK, description: "Success", type: [GetAccountDto]})
-    findAll(): Promise<Account[]> {
+    findAll(): Promise<GetAccountDto[]> {
         return this.accountsService.findAll();
     }
 
@@ -25,7 +24,7 @@ export class AccountsController {
     @ApiResponse({status: HttpStatus.OK, description: "Success", type: GetAccountDto})
     @ApiResponse({status: HttpStatus.NOT_FOUND, description: "Account not found exception"})
     @ApiResponse({status: HttpStatus.FORBIDDEN, description: "Account is banned guard"})
-    findOne(@Param("accountId") id: string): Promise<Account> {
+    findOne(@Param("accountId", ParseIntPipe) id: number): Promise<GetAccountDto> {
         return this.accountsService.findOne(+id);
     }
 
@@ -35,14 +34,14 @@ export class AccountsController {
     @ApiResponse({status: HttpStatus.OK, description: "Success", type: Number})
     @ApiResponse({status: HttpStatus.NOT_FOUND, description: "Account not found exception"})
     @ApiResponse({status: HttpStatus.FORBIDDEN, description: "Account is banned guard"})
-    getBalance(@Param("accountId") id: string): Promise<number> {
+    getBalance(@Param("accountId", ParseIntPipe) id: number): Promise<number> {
         return this.accountsService.getBalance(+id);
     }
 
     @Patch(":accountId/block")
     @ApiOperation({summary: "Returns and blocks the account"})
     @ApiResponse({status: HttpStatus.OK, description: "Success", type: GetAccountDto})
-    blockAccount(@Param("accountId") id: string): Promise<Account> {
+    blockAccount(@Param("accountId", ParseIntPipe) id: number): Promise<GetAccountDto> {
         return this.accountsService.blockAccount(+id);
     }
 }
