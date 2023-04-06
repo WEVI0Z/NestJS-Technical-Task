@@ -1,14 +1,14 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { AccountsService } from '../accounts/accounts.service';
-import { Repository } from 'typeorm';
-import { Transaction } from './entities/transaction.entity';
-import { TransactionsService } from './transactions.service';
-import { Account } from '../accounts/entities/account.entity';
-import { PaginationQueryDto } from './dto/pagination-query.dto';
-import { ReplenishBalanceDto } from './dto/replenish-balance.dto';
-import { HttpException } from '@nestjs/common';
-import { TransactionsController } from './transactions.controller';
+import { Test, TestingModule } from "@nestjs/testing";
+import { getRepositoryToken } from "@nestjs/typeorm";
+import { AccountsService } from "../accounts/accounts.service";
+import { Repository } from "typeorm";
+import { Transaction } from "./entities/transaction.entity";
+import { TransactionsService } from "./transactions.service";
+import { Account } from "../accounts/entities/account.entity";
+import { PaginationQueryDto } from "./dto/pagination-query.dto";
+import { ReplenishBalanceDto } from "./dto/replenish-balance.dto";
+import { HttpException } from "@nestjs/common";
+import { TransactionsController } from "./transactions.controller";
 
 type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>
 const createMockRepository = <T = any>(): MockRepository<T> => ({
@@ -26,7 +26,7 @@ const mockAccount = {
   accountType: 0
 }
 
-describe('TransactionsService', () => {
+describe("TransactionsService", () => {
   let transactionService: TransactionsService;
   let transactionRepository: MockRepository;
   let transactionsController: TransactionsController;
@@ -51,12 +51,12 @@ describe('TransactionsService', () => {
     transactionsController = module.get<TransactionsController>(TransactionsController);
   });
 
-  it('should be defined', () => {
+  it("should be defined", () => {
     expect(transactionsController).toBeDefined();
   });
 
-  describe('findAll', () => {
-    it('should return transactions array', async () => {
+  describe("findAll", () => {
+    it("should return transactions array", async () => {
       const expectedObject: Transaction[] = [];
 
       transactionRepository.find.mockReturnValue([]);
@@ -67,8 +67,8 @@ describe('TransactionsService', () => {
     })
   });
 
-  describe('findAllAccountTransactions', () => {
-    it('should return transactions array', async () => {
+  describe("findAllAccountTransactions", () => {
+    it("should return transactions array", async () => {
       const id = 1;
       const expectedObject: Transaction[] = [];
 
@@ -76,14 +76,14 @@ describe('TransactionsService', () => {
 
       transactionRepository.find.mockReturnValue([]);
 
-      const transactions = await transactionsController.findAllAccountTransactions(id + '', paginationQuery);
+      const transactions = await transactionsController.findAllAccountTransactions(id + "", paginationQuery);
 
       expect(transactions).toEqual(expectedObject);
     })
   });
   
-  describe('replenishBalance', () => {
-    it('should return new transaction', async () => {
+  describe("replenishBalance", () => {
+    it("should return new transaction", async () => {
       const id = 1;
 
       const replenishBalance: ReplenishBalanceDto = {
@@ -95,15 +95,15 @@ describe('TransactionsService', () => {
       transactionRepository.create.mockReturnValue({});
       transactionRepository.save.mockReturnValue({});
 
-      const transactions = await transactionsController.replenishBalance(id + '', replenishBalance);
+      const transactions = await transactionsController.replenishBalance(id + "", replenishBalance);
 
       expect(transactions).toEqual(expectedObject);
     })
   })
 
-  describe('withdrawBalance', () => {
-    describe('when there is anouth money on the balance', () => {
-      it('should return new transaction', async () => {
+  describe("withdrawBalance", () => {
+    describe("when there is anouth money on the balance", () => {
+      it("should return new transaction", async () => {
         const id = 1;
 
         const replenishBalance: ReplenishBalanceDto = {
@@ -115,14 +115,14 @@ describe('TransactionsService', () => {
         transactionRepository.create.mockReturnValue({});
         transactionRepository.save.mockReturnValue({});
 
-        const transactions = await transactionsController.withdrawFromBalance(id + '', replenishBalance);
+        const transactions = await transactionsController.withdrawFromBalance(id + "", replenishBalance);
 
         expect(transactions).toEqual(expectedObject);
       })
     })
 
-    describe('otherwise', () => {
-      it('should return http exception', async () => {
+    describe("otherwise", () => {
+      it("should return http exception", async () => {
         const id = 1;
 
         const replenishBalance: ReplenishBalanceDto = {
@@ -133,10 +133,10 @@ describe('TransactionsService', () => {
         transactionRepository.save.mockReturnValue({});
 
         try {
-          await transactionsController.withdrawFromBalance(id + '', replenishBalance);
+          await transactionsController.withdrawFromBalance(id + "", replenishBalance);
         } catch(err) {
           expect(err).toBeInstanceOf(HttpException);
-          expect(err.message).toEqual(`Not enough money on the Account's balance to complete the transaction`)          
+          expect(err.message).toEqual(`Not enough money on the Account"s balance to complete the transaction`)          
         }
       })
     })

@@ -1,10 +1,10 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { AccountsService } from './accounts.service';
-import { Account } from './entities/account.entity';
-import { HttpException } from '@nestjs/common';
-import { AccountsController } from './accounts.controller';
+import { Test, TestingModule } from "@nestjs/testing";
+import { getRepositoryToken } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { AccountsService } from "./accounts.service";
+import { Account } from "./entities/account.entity";
+import { HttpException } from "@nestjs/common";
+import { AccountsController } from "./accounts.controller";
 
 type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>
 const createMockRepository = <T = any>(): MockRepository<T> => ({
@@ -16,7 +16,7 @@ const createMockRepository = <T = any>(): MockRepository<T> => ({
     save: jest.fn()
 })
 
-describe('AccountsService', () => {
+describe("AccountsService", () => {
   let service: AccountsService;
   let controller: AccountsController;
   let accountRepository: MockRepository;
@@ -35,12 +35,12 @@ describe('AccountsService', () => {
     accountRepository = module.get<MockRepository>(getRepositoryToken(Account));
   });
 
-  it('should be defined', () => {
+  it("should be defined", () => {
     expect(service).toBeDefined();
   });
 
-  describe('findAll', () => {
-    it('should return accounts array', async () => {
+  describe("findAll", () => {
+    it("should return accounts array", async () => {
       const expectedObject: Account[] = []
 
       accountRepository.find.mockReturnValue([]);
@@ -51,66 +51,66 @@ describe('AccountsService', () => {
     });
   });
 
-  describe('findOne', () => {
-    describe('when there is an account', () => {
-      it('should return an account', async () => {
+  describe("findOne", () => {
+    describe("when there is an account", () => {
+      it("should return an account", async () => {
         const expectedObject = {}
   
         accountRepository.findOneBy.mockReturnValue({});
   
-        const accounts = await controller.findOne('1');
+        const accounts = await controller.findOne("1");
   
         expect(accounts).toEqual(expectedObject);
       });
     })
 
-    describe('otherwise', () => {
-      it('should return an http exception', async () => {  
+    describe("otherwise", () => {
+      it("should return an http exception", async () => {  
         accountRepository.findOneBy.mockReturnValue(undefined);
   
         try {
-          await controller.findOne('1');
+          await controller.findOne("1");
         } catch(err) {
           expect(err).toBeInstanceOf(HttpException);
         }
       });
     })
 
-    describe('when the user is blocked', () => {
-        it('should return a http exception', async () => {
+    describe("when the user is blocked", () => {
+        it("should return a http exception", async () => {
             accountRepository.findOneBy.mockReturnValue({
                 status: false
             });
     
             try {
-              await controller.findOne('1');
+              await controller.findOne("1");
             } catch(err) {
               expect(err).toBeInstanceOf(HttpException);
               expect(err.status).toBe(403);
-              expect(err.message).toBe('Account #1 is banned');
+              expect(err.message).toBe("Account #1 is banned");
             }
         })
     })
   });
 
-  describe('getBalance', () => {
-    describe('when there is an account', () => {
-      it('should return an account', async () => {  
+  describe("getBalance", () => {
+    describe("when there is an account", () => {
+      it("should return an account", async () => {  
         accountRepository.findOneBy.mockReturnValue({
           balance: 0
         });
   
-        const balance = await controller.getBalance('1');
+        const balance = await controller.getBalance("1");
   
-        expect(typeof balance).toBe('number');
+        expect(typeof balance).toBe("number");
       });
     })
-    describe('otherwise', () => {
-      it('should return an http exception', async () => {  
+    describe("otherwise", () => {
+      it("should return an http exception", async () => {  
         accountRepository.findOneBy.mockReturnValue(undefined);
   
         try {
-          await controller.getBalance('1');
+          await controller.getBalance("1");
         } catch(err) {
           expect(err).toBeInstanceOf(HttpException);
         }
@@ -118,26 +118,26 @@ describe('AccountsService', () => {
     })
   })
 
-  describe('blockAccount', () => {
-    describe('when there is an account', () => {
-      it('should return an account', async () => {
+  describe("blockAccount", () => {
+    describe("when there is an account", () => {
+      it("should return an account", async () => {
         const expectedObject = {};
 
         accountRepository.preload.mockReturnValue({});
         accountRepository.save.mockReturnValue({});
 
-        const account = await controller.blockAccount('1');
+        const account = await controller.blockAccount("1");
 
         expect(account).toEqual(expectedObject);
       })
     })
 
-    describe('otherwise', () => {
-      it('should return a http exception', async () => {
+    describe("otherwise", () => {
+      it("should return a http exception", async () => {
         accountRepository.preload.mockReturnValue(undefined);
 
         try {
-          await controller.blockAccount('1');
+          await controller.blockAccount("1");
         } catch(err) {
           expect(err).toBeInstanceOf(HttpException);
         }

@@ -1,11 +1,11 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { Account } from '../accounts/entities/account.entity';
-import { Repository } from 'typeorm';
-import { ClientsService } from './clients.service';
-import { Client } from './entities/client.entity';
-import { CreateClientAccountDto } from './dto/create-client-account.dto';
-import { ClientsController } from './clients.controller';
+import { Test, TestingModule } from "@nestjs/testing";
+import { getRepositoryToken } from "@nestjs/typeorm";
+import { Account } from "../accounts/entities/account.entity";
+import { Repository } from "typeorm";
+import { ClientsService } from "./clients.service";
+import { Client } from "./entities/client.entity";
+import { CreateClientAccountDto } from "./dto/create-client-account.dto";
+import { ClientsController } from "./clients.controller";
 
 type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>
 const createMockRepository = <T = any>(): MockRepository<T> => ({
@@ -14,7 +14,7 @@ const createMockRepository = <T = any>(): MockRepository<T> => ({
   save: jest.fn(),
 })
 
-describe('ClientsService', () => {
+describe("ClientsService", () => {
   let service: ClientsService;
   let controller: ClientsController;
   let accountRepository: MockRepository;
@@ -36,12 +36,12 @@ describe('ClientsService', () => {
     clientRepository = module.get<MockRepository>(getRepositoryToken(Client));
   });
 
-  it('should be defined', () => {
+  it("should be defined", () => {
     expect(controller).toBeDefined();
   });
 
-  describe('findAll', () => {
-    it('should return clients array', async () => {
+  describe("findAll", () => {
+    it("should return clients array", async () => {
       const expectedObject: Client[] = [];
 
       clientRepository.find.mockReturnValue([]);
@@ -52,13 +52,13 @@ describe('ClientsService', () => {
     })
   });
 
-  describe('createClientAccount', () => {
-    it('should return new account instance', async () => {
+  describe("createClientAccount", () => {
+    it("should return new account instance", async () => {
       const expectedObject = {};
 
       const createClientAccount: CreateClientAccountDto = {
-        name: 'name',
-        document: 'document',
+        name: "name",
+        document: "document",
         birthDate: new Date()
       }
 

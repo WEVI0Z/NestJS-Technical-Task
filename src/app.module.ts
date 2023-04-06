@@ -1,10 +1,10 @@
-import { Module } from '@nestjs/common';
-import { AccountsModule } from './accounts/accounts.module';
-import { TransactionsModule } from './transactions/transactions.module';
-import { ClientsModule } from './clients/clients.module';
-import { ConfigModule } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+import { Module } from "@nestjs/common";
+import { AccountsModule } from "./accounts/accounts.module";
+import { TransactionsModule } from "./transactions/transactions.module";
+import { ClientsModule } from "./clients/clients.module";
+import { ConfigModule } from "@nestjs/config";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { SnakeNamingStrategy } from "typeorm-naming-strategies";
 
 @Module({
   imports: [
@@ -13,7 +13,7 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
     TransactionsModule,
     ClientsModule,
     TypeOrmModule.forRoot({
-      type: 'postgres',
+      type: "postgres",
       host: process.env.DATABASE_HOST,
       port: +process.env.DATABASE_PORT,
       username: process.env.DATABASE_USER,

@@ -1,8 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { PatchAccountDto } from './dto/patch-account.dto';
-import { Account } from './entities/account.entity';
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { PatchAccountDto } from "./dto/patch-account.dto";
+import { Account } from "./entities/account.entity";
 
 @Injectable()
 export class AccountsService {
@@ -13,7 +13,7 @@ export class AccountsService {
 
     async findAll(): Promise<Account[]> {
         return await this.accountRepository.find({
-            relations: ['person']
+            relations: ["person"]
         });
     }
 

@@ -1,14 +1,14 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { HttpStatus, INestApplication } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import * as request from 'supertest';
-import { TransactionsModule } from '../../src/transactions/transactions.module';
-import { Repository } from 'typeorm';
-import { Client } from '../../src/clients/entities/client.entity';
-import { Account } from '../../src/accounts/entities/account.entity';
-import { Transaction } from '../../src/transactions/entities/transaction.entity';
+import { Test, TestingModule } from "@nestjs/testing";
+import { HttpStatus, INestApplication } from "@nestjs/common";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import * as request from "supertest";
+import { TransactionsModule } from "../../src/transactions/transactions.module";
+import { Repository } from "typeorm";
+import { Client } from "../../src/clients/entities/client.entity";
+import { Account } from "../../src/accounts/entities/account.entity";
+import { Transaction } from "../../src/transactions/entities/transaction.entity";
 
-describe('[Feature] Clients (e2e)', () => {
+describe("[Feature] Clients (e2e)", () => {
   const client = {
       name: "Wevioz",
       document: "KH0403240",
@@ -26,12 +26,12 @@ describe('[Feature] Clients (e2e)', () => {
       imports: [
         TransactionsModule,
         TypeOrmModule.forRoot({
-          type: 'postgres',
-          host: 'localhost',
+          type: "postgres",
+          host: "localhost",
           port: 5433,
-          username: 'postgres',
-          password: 'pass123',
-          database: 'postgres',
+          username: "postgres",
+          password: "pass123",
+          database: "postgres",
           entities: [Client, Account, Transaction],
           autoLoadEntities: true,
           synchronize: true,
@@ -41,9 +41,9 @@ describe('[Feature] Clients (e2e)', () => {
 
     app = moduleFixture.createNestApplication();
 
-    clientRepository = moduleFixture.get('ClientRepository');
-    accountRepository = moduleFixture.get('AccountRepository');
-    transactionRepository = moduleFixture.get('TransactionRepository');
+    clientRepository = moduleFixture.get("ClientRepository");
+    accountRepository = moduleFixture.get("AccountRepository");
+    transactionRepository = moduleFixture.get("TransactionRepository");
     const clientRepo = clientRepository.save({
       ...client,
     });
@@ -60,18 +60,18 @@ describe('[Feature] Clients (e2e)', () => {
     await app.init();
   });
 
-  describe('Find all clients [GET /]', () => {
-    it('should return OK status', () => {
+  describe("Find all clients [GET /]", () => {
+    it("should return OK status", () => {
       return request(app.getHttpServer())
-          .get('/clients')
+          .get("/clients")
           .expect(HttpStatus.OK)
     });
   })
 
-  describe('Create a client [POST /]', () => {
-    it('should return CREATED status', () => {
+  describe("Create a client [POST /]", () => {
+    it("should return CREATED status", () => {
       return request(app.getHttpServer())
-          .post('/clients')
+          .post("/clients")
           .send(client as Client)
           .expect(HttpStatus.CREATED)
     });

@@ -1,10 +1,10 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { AccountsService } from './accounts.service';
-import { Account } from './entities/account.entity';
-import { HttpException } from '@nestjs/common';
-import { PatchAccountDto } from './dto/patch-account.dto';
+import { Test, TestingModule } from "@nestjs/testing";
+import { getRepositoryToken } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { AccountsService } from "./accounts.service";
+import { Account } from "./entities/account.entity";
+import { HttpException } from "@nestjs/common";
+import { PatchAccountDto } from "./dto/patch-account.dto";
 
 type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>
 const createMockRepository = <T = any>(): MockRepository<T> => ({
@@ -16,7 +16,7 @@ const createMockRepository = <T = any>(): MockRepository<T> => ({
     save: jest.fn()
 })
 
-describe('AccountsService', () => {
+describe("AccountsService", () => {
   let service: AccountsService;
   let accountRepository: MockRepository;
 
@@ -32,12 +32,12 @@ describe('AccountsService', () => {
     accountRepository = module.get<MockRepository>(getRepositoryToken(Account));
   });
 
-  it('should be defined', () => {
+  it("should be defined", () => {
     expect(service).toBeDefined();
   });
 
-  describe('findAll', () => {
-    it('should return accounts array', async () => {
+  describe("findAll", () => {
+    it("should return accounts array", async () => {
       const expectedObject: Account[] = []
 
       accountRepository.find.mockReturnValue([]);
@@ -48,9 +48,9 @@ describe('AccountsService', () => {
     });
   });
 
-  describe('findOne', () => {
-    describe('when there is an account', () => {
-      it('should return an account', async () => {
+  describe("findOne", () => {
+    describe("when there is an account", () => {
+      it("should return an account", async () => {
         const expectedObject = {}
   
         accountRepository.findOneBy.mockReturnValue({});
@@ -60,8 +60,8 @@ describe('AccountsService', () => {
         expect(accounts).toEqual(expectedObject);
       });
     })
-    describe('otherwise', () => {
-      it('should return an http exception', async () => {  
+    describe("otherwise", () => {
+      it("should return an http exception", async () => {  
         accountRepository.findOneBy.mockReturnValue(undefined);
   
         try {
@@ -73,9 +73,9 @@ describe('AccountsService', () => {
     })
   });
 
-  describe('patchAccount', () => {
-    describe('when there is an account', () => {
-      it('should return an account', async () => {
+  describe("patchAccount", () => {
+    describe("when there is an account", () => {
+      it("should return an account", async () => {
         const expectedObject = {};
         const patchAccountDto: PatchAccountDto = {}
 
@@ -88,8 +88,8 @@ describe('AccountsService', () => {
       })
     })
 
-    describe('otherwise', () => {
-      it('should return a http exception', async () => {
+    describe("otherwise", () => {
+      it("should return a http exception", async () => {
         const patchAccountDto: PatchAccountDto = {}
 
         accountRepository.preload.mockReturnValue(undefined);
@@ -103,20 +103,20 @@ describe('AccountsService', () => {
     })
   })
 
-  describe('getBalance', () => {
-    describe('when there is an account', () => {
-      it('should return an account', async () => {  
+  describe("getBalance", () => {
+    describe("when there is an account", () => {
+      it("should return an account", async () => {  
         accountRepository.findOneBy.mockReturnValue({
           balance: 0
         });
   
         const balance = await service.getBalance(1);
   
-        expect(typeof balance).toBe('number');
+        expect(typeof balance).toBe("number");
       });
     })
-    describe('otherwise', () => {
-      it('should return an http exception', async () => {  
+    describe("otherwise", () => {
+      it("should return an http exception", async () => {  
         accountRepository.findOneBy.mockReturnValue(undefined);
   
         try {
@@ -128,9 +128,9 @@ describe('AccountsService', () => {
     })
   })
 
-  describe('blockAccount', () => {
-    describe('when there is an account', () => {
-      it('should return an account', async () => {
+  describe("blockAccount", () => {
+    describe("when there is an account", () => {
+      it("should return an account", async () => {
         const expectedObject = {};
 
         accountRepository.preload.mockReturnValue({});
@@ -142,8 +142,8 @@ describe('AccountsService', () => {
       })
     })
 
-    describe('otherwise', () => {
-      it('should return a http exception', async () => {
+    describe("otherwise", () => {
+      it("should return a http exception", async () => {
         accountRepository.preload.mockReturnValue(undefined);
 
         try {
