@@ -6,6 +6,7 @@ import { BalanceRequestLimitGuard } from "./guards/balance-request-limit.guard";
 import { TransactionsService } from "./transactions.service";
 import { Transaction } from "./entities/transaction.entity";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { GetTransaction } from "./dto/get-transaction.dto";
 
 @ApiTags("Transactions")
 @Controller("transactions")
@@ -16,7 +17,7 @@ export class TransactionsController {
 
     @Get()
     @ApiOperation({summary: "Returns all transactions"})
-    @ApiResponse({status: HttpStatus.OK, description: "Success", type: Array<Transaction>})
+    @ApiResponse({status: HttpStatus.OK, description: "Success", type: [GetTransaction]})
     findAll(): Promise<Transaction[]> {
         return this.transactionsService.findAll();
     }
@@ -24,7 +25,7 @@ export class TransactionsController {
     @UseGuards(BlockedUserGuard)
     @Get(":accountId")
     @ApiOperation({summary: "Returns all the account\"s transactions"})
-    @ApiResponse({status: HttpStatus.OK, description: "Success", type: Array<Transaction>})
+    @ApiResponse({status: HttpStatus.OK, description: "Success", type: [GetTransaction]})
     @ApiResponse({status: HttpStatus.NOT_FOUND, description: "Account not found exception"})
     @ApiResponse({status: HttpStatus.FORBIDDEN, description: "Account is banned guard"})
     findAllAccountTransactions(
@@ -38,7 +39,7 @@ export class TransactionsController {
     @UseGuards(BalanceRequestLimitGuard)
     @Patch(":accountId/balance/replenish")
     @ApiOperation({summary: "Replenishes the balance of the account"})
-    @ApiResponse({status: HttpStatus.OK, description: "Success", type: Transaction})
+    @ApiResponse({status: HttpStatus.OK, description: "Success", type: GetTransaction})
     @ApiResponse({status: HttpStatus.NOT_FOUND, description: "Account not found exception"})
     @ApiResponse({status: HttpStatus.FORBIDDEN, description: "Account is banned guard"})
     replenishBalance(
@@ -52,7 +53,7 @@ export class TransactionsController {
     @UseGuards(BalanceRequestLimitGuard)
     @Patch(":accountId/balance/withdraw")
     @ApiOperation({summary: "Withdraws from the account's balance"})
-    @ApiResponse({status: HttpStatus.OK, description: "Success", type: Transaction})
+    @ApiResponse({status: HttpStatus.OK, description: "Success", type: GetTransaction})
     @ApiResponse({status: HttpStatus.NOT_FOUND, description: "Account not found exception"})
     @ApiResponse({status: HttpStatus.FORBIDDEN, description: "Account is banned guard"})
     withdrawFromBalance(

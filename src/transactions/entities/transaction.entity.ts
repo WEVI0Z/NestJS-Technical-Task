@@ -5,7 +5,6 @@ import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "t
 @Entity()
 export class Transaction {
     @PrimaryGeneratedColumn()
-    @ApiProperty()
     id: number;
 
     @JoinColumn()
@@ -13,12 +12,10 @@ export class Transaction {
     account: Account;
 
     @Column()
-    @ApiProperty()
     value: number;
 
     @Column({
         name: "transaction_date"
     })
-    @ApiProperty()
     transactionDate: Date;
 }
