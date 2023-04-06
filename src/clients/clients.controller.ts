@@ -3,6 +3,7 @@ import { ClientsService } from './clients.service';
 import { CreateClientAccountDto } from './dto/create-client-account.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Account } from '../accounts/entities/account.entity';
+import { Client } from './entities/client.entity';
 
 @ApiTags('Clients')
 @Controller('clients')
@@ -13,7 +14,7 @@ export class ClientsController {
 
     @Get()
     @ApiOperation({summary: 'Returns array of clients'})
-    @ApiResponse({status: HttpStatus.OK, description: "Success", type: Array})
+    @ApiResponse({status: HttpStatus.OK, description: "Success", type: Array<Client>})
     findAll() {
         return this.clientsService.findAll();
     }

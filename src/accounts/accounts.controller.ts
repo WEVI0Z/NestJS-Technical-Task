@@ -13,7 +13,7 @@ export class AccountsController {
     
     @Get()
     @ApiOperation({summary: 'Returns all accounts'})
-    @ApiResponse({status: HttpStatus.OK, description: "Success", type: Array})
+    @ApiResponse({status: HttpStatus.OK, description: "Success", type: Array<Account>})
     findAll(): Promise<Account[]> {
         return this.accountsService.findAll();
     }

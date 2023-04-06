@@ -17,6 +17,7 @@ export class TransactionsController {
 
     @Get()
     @ApiOperation({summary: 'Returns all transactions'})
+    @ApiResponse({status: HttpStatus.OK, description: "Success", type: Array<Transaction>})
     findAll(): Promise<Transaction[]> {
         return this.transactionsService.findAll();
     }
@@ -24,7 +25,7 @@ export class TransactionsController {
     @UseGuards(BlockedUserGuard)
     @Get(":accountId")
     @ApiOperation({summary: 'Returns all the account\'s transactions'})
-    @ApiResponse({status: HttpStatus.OK, description: "Success", type: Array})
+    @ApiResponse({status: HttpStatus.OK, description: "Success", type: Array<Transaction>})
     @ApiResponse({status: HttpStatus.NOT_FOUND, description: "Account not found exception"})
     @ApiResponse({status: HttpStatus.FORBIDDEN, description: "Account is banned guard"})
     findAllAccountTransactions(
