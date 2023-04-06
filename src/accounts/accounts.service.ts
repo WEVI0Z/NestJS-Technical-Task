@@ -18,7 +18,10 @@ export class AccountsService {
     }
 
     async findOne(id: number): Promise<Account> {
-        const account = await this.accountRepository.findOneBy({ id });
+        const account = await this.accountRepository.findOne({
+            where: { id },
+            relations: ["person"]
+        });
 
         if(!account) {
             throw new NotFoundException(`Account #${id} not found`);

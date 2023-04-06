@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsBoolean, IsDate, IsNumber } from "class-validator";
-import { Client } from "src/clients/entities/client.entity";
-import { Transaction } from "src/transactions/entities/transaction.entity";
+import { Client } from "../../clients/entities/client.entity";
+import { Transaction } from "../../transactions/entities/transaction.entity";
 
 export class PatchAccountDto {
     @ApiProperty()
