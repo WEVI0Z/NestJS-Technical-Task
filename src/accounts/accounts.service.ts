@@ -34,7 +34,7 @@ export class AccountsService {
         const account = await this.accountRepository.preload({
             id: id,
             ...patchAccountDto
-        })
+        });
 
         if(!account) {
             throw new NotFoundException(`Account #${id} not found`);
@@ -50,6 +50,6 @@ export class AccountsService {
     }
 
     async blockAccount(id: number): Promise<Account> {
-        return await this.patchAccount(id, {active: false})
+        return await this.patchAccount(id, {active: false});
     }
 }

@@ -2,6 +2,7 @@ import { CanActivate, ExecutionContext, HttpException, HttpStatus, Injectable } 
 import { Observable } from "rxjs";
 import { AccountsService } from "../../accounts/accounts.service";
 import { TransactionsService } from "../../transactions/transactions.service";
+import { PaginationQueryDto } from "../dto/pagination-query.dto";
 
 @Injectable()
 export class BalanceRequestLimitGuard implements CanActivate {
@@ -10,34 +11,34 @@ export class BalanceRequestLimitGuard implements CanActivate {
     private readonly transactionsService: TransactionsService
   ) {}
 
-  canActivate(
+  async canActivate(
     context: ExecutionContext,
-  ): boolean | Promise<boolean> | Observable<boolean> {
+  ): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
 
     const params = request.params;
 
-    const id = params.id;
+    const id = params.accountId;
     
-    return this.transactionsService.findAllAccountTransactions(id, { limit: 10, offset: 0 }).then(transactions => {
-      return this.accountService.findOne(id).then(account => {
-        let check: number = 0;
-        const currentDate: Date = new Date();
-        const newDate: Date = new Date(currentDate.setDate(currentDate.getDate() + 1));
+    const transactions = await this.transactionsService.findAllAccountTransactions(id, {limit: 10, offset: 0});
 
-        transactions.forEach(transaction => {
-          check += transaction.transactionDate < newDate ? 1 : 0
-        })
+    const account = await this.accountService.findOne(id);
 
-        if(account.dailyWithdrawalLimit > check){
-          return account.dailyWithdrawalLimit > check;
-        } else {
-          throw new HttpException(
-            `Account #${id} withdrawal limit is only ${account.dailyWithdrawalLimit} operations per day`,
-            HttpStatus.FORBIDDEN
-          )
-        }
-      });
+    let check: number = 0;
+    const currentDate: Date = new Date();
+    const newDate: Date = new Date(currentDate.setDate(currentDate.getDate() + 1));
+
+    transactions.forEach(transaction => {
+      check += transaction.transactionDate < newDate ? 1 : 0;
     });
+
+    if(account.dailyWithdrawalLimit <= check) {
+      throw new HttpException(
+        `Account #${id} withdrawal limit is only ${account.dailyWithdrawalLimit} operations per day`,
+        HttpStatus.FORBIDDEN
+      );
+    }
+    
+    return account.dailyWithdrawalLimit > check;
   }
 }

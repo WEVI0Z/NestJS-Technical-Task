@@ -30,16 +30,16 @@ export class TransactionsService {
             throw new HttpException(
                 "Not enough money on the Account's balance to complete the transaction",
                 HttpStatus.CONFLICT
-            )
+            );
         }
 
-        const account = await this.accountService.patchAccount(id, {balance: newValue})
+        const account = await this.accountService.patchAccount(id, {balance: newValue});
 
         const transaction = await this.transactionRepository.create({
             account: account,
             value: replenishValue,
             transactionDate: new Date()
-        })
+        });
         
         return this.transactionRepository.save(transaction);
     }

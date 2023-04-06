@@ -11,4 +11,4 @@ import { Account } from "./entities/account.entity";
   controllers: [AccountsController],
   exports: [TypeOrmModule, AccountsService]
 })
-export class AccountsModule {}
+export class AccountsModule {};

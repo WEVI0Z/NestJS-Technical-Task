@@ -25,7 +25,7 @@ export class AccountsController {
     @ApiResponse({status: HttpStatus.NOT_FOUND, description: "Account not found exception"})
     @ApiResponse({status: HttpStatus.FORBIDDEN, description: "Account is banned guard"})
     findOne(@Param("accountId") id: string): Promise<Account> {
-        return this.accountsService.findOne(+id)
+        return this.accountsService.findOne(+id);
     }
 
     @UseGuards(BlockedUserGuard)

@@ -12,7 +12,7 @@ const createMockRepository = <T = any>(): MockRepository<T> => ({
   find: jest.fn(),
   create: jest.fn(),
   save: jest.fn(),
-})
+});
 
 describe("ClientsService", () => {
   let service: ClientsService;
@@ -49,7 +49,7 @@ describe("ClientsService", () => {
       const clients = await controller.findAll();
 
       expect(clients).toEqual(expectedObject);
-    })
+    });
   });
 
   describe("createClientAccount", () => {
@@ -60,7 +60,7 @@ describe("ClientsService", () => {
         name: "name",
         document: "document",
         birthDate: new Date()
-      }
+      };
 
       clientRepository.create.mockReturnValue({});
       clientRepository.save.mockReturnValue({});
@@ -71,6 +71,6 @@ describe("ClientsService", () => {
       const clients = await controller.createClientAccount(createClientAccount);
 
       expect(clients).toEqual(expectedObject);
-    })
+    });
   });
 });

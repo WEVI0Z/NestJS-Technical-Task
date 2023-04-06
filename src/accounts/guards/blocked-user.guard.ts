@@ -18,11 +18,11 @@ export class BlockedUserGuard implements CanActivate {
     const id = params.accountId;
 
     return this.accountService.findOne(id).then(account => {
-      if(account.active){
-        return account.active;
-      } else {
-        throw new HttpException(`Account #${id} is banned`, HttpStatus.FORBIDDEN)
+      if(!account.active){
+        throw new HttpException(`Account #${id} is banned`, HttpStatus.FORBIDDEN);
       }
+      
+      return account.active;
     });
   }
 }

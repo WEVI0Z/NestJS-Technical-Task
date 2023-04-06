@@ -16,7 +16,7 @@ export class Account {
 
     @OneToMany(() => Transaction, transaction => transaction.account)
     @ApiProperty()
-    transactions: Transaction[]
+    transactions: Transaction[];
 
     @Column({
         default: 0

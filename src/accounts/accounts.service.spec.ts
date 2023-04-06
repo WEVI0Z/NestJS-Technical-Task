@@ -38,7 +38,7 @@ describe("AccountsService", () => {
 
   describe("findAll", () => {
     it("should return accounts array", async () => {
-      const expectedObject: Account[] = []
+      const expectedObject: Account[] = [];
 
       accountRepository.find.mockReturnValue([]);
 
@@ -51,9 +51,9 @@ describe("AccountsService", () => {
   describe("findOne", () => {
     describe("when there is an account", () => {
       it("should return an account", async () => {
-        const expectedObject = {}
+        const expectedObject = {};
   
-        accountRepository.findOneBy.mockReturnValue({});
+        accountRepository.findOne.mockReturnValue({});
   
         const accounts = await service.findOne(1);
   
@@ -62,7 +62,7 @@ describe("AccountsService", () => {
     })
     describe("otherwise", () => {
       it("should return an http exception", async () => {  
-        accountRepository.findOneBy.mockReturnValue(undefined);
+        accountRepository.findOne.mockReturnValue(undefined);
   
         try {
           await service.findOne(1);
@@ -77,7 +77,7 @@ describe("AccountsService", () => {
     describe("when there is an account", () => {
       it("should return an account", async () => {
         const expectedObject = {};
-        const patchAccountDto: PatchAccountDto = {}
+        const patchAccountDto: PatchAccountDto = {};
 
         accountRepository.preload.mockReturnValue({});
         accountRepository.save.mockReturnValue({});
@@ -90,7 +90,7 @@ describe("AccountsService", () => {
 
     describe("otherwise", () => {
       it("should return a http exception", async () => {
-        const patchAccountDto: PatchAccountDto = {}
+        const patchAccountDto: PatchAccountDto = {};
 
         accountRepository.preload.mockReturnValue(undefined);
 
@@ -106,7 +106,7 @@ describe("AccountsService", () => {
   describe("getBalance", () => {
     describe("when there is an account", () => {
       it("should return an account", async () => {  
-        accountRepository.findOneBy.mockReturnValue({
+        accountRepository.findOne.mockReturnValue({
           balance: 0
         });
   
@@ -117,7 +117,7 @@ describe("AccountsService", () => {
     })
     describe("otherwise", () => {
       it("should return an http exception", async () => {  
-        accountRepository.findOneBy.mockReturnValue(undefined);
+        accountRepository.findOne.mockReturnValue(undefined);
   
         try {
           await service.getBalance(1);

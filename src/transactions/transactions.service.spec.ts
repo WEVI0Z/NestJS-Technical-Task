@@ -16,30 +16,31 @@ const createMockRepository = <T = any>(): MockRepository<T> => ({
   preload: jest.fn(),
   findOne: jest.fn(),
   save: jest.fn()
-})
+});
 
 const mockBalance = {balance: 34};
 
 const mockAccount = {
   id: 1,
   accountType: 0
-}
+};
 
 describe("TransactionsService", () => {
   let transactionService: TransactionsService;
   let transactionRepository: MockRepository;
 
   beforeEach(async () => {
-
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         TransactionsService,
         { provide: getRepositoryToken(Transaction), useValue: createMockRepository() },
         { provide: getRepositoryToken(Account), useValue: createMockRepository() },
-        { provide: AccountsService, useValue: {
-          findOne: jest.fn(() => mockBalance),
-          patchAccount: jest.fn(async () => mockAccount),
-        } },
+        { provide: AccountsService, useValue:
+          {
+            findOne: jest.fn(() => mockBalance),
+            patchAccount: jest.fn(async () => mockAccount),
+          }
+        },
       ],
     }).compile();
 
@@ -60,7 +61,7 @@ describe("TransactionsService", () => {
       const transactions = await transactionService.findAll();
 
       expect(transactions).toEqual(expectedObject);
-    })
+    });
   });
 
   describe("findAllAccountTransactions", () => {
@@ -68,14 +69,14 @@ describe("TransactionsService", () => {
       const id = 1;
       const expectedObject: Transaction[] = [];
 
-      const paginationQuery: PaginationQueryDto = {offset: 0, limit: 0}
+      const paginationQuery: PaginationQueryDto = {offset: 0, limit: 0};
 
       transactionRepository.find.mockReturnValue([]);
 
       const transactions = await transactionService.findAllAccountTransactions(id, paginationQuery);
 
       expect(transactions).toEqual(expectedObject);
-    })
+    });
   });
   
   describe("replenishBalance", () => {
@@ -84,7 +85,7 @@ describe("TransactionsService", () => {
 
       const replenishBalance: ReplenishBalanceDto = {
         value: 34
-      }
+      };
 
       const expectedObject = {};
 
@@ -94,8 +95,8 @@ describe("TransactionsService", () => {
       const transactions = await transactionService.replenishBalance(id, replenishBalance);
 
       expect(transactions).toEqual(expectedObject);
-    })
-  })
+    });
+  });
 
   describe("withdrawBalance", () => {
     describe("when there is anouth money on the balance", () => {
@@ -104,7 +105,7 @@ describe("TransactionsService", () => {
 
         const replenishBalance: ReplenishBalanceDto = {
           value: 0
-        }
+        };
 
         const expectedObject = {};
 
@@ -114,8 +115,8 @@ describe("TransactionsService", () => {
         const transactions = await transactionService.withdrawFromBalance(id, replenishBalance);
 
         expect(transactions).toEqual(expectedObject);
-      })
-    })
+      });
+    });
 
     describe("otherwise", () => {
       it("should return http exception", async () => {
@@ -123,9 +124,7 @@ describe("TransactionsService", () => {
 
         const replenishBalance: ReplenishBalanceDto = {
           value: 35
-        }
-
-        const expectedObject = {};
+        };
 
         transactionRepository.create.mockReturnValue({});
         transactionRepository.save.mockReturnValue({});
@@ -134,9 +133,9 @@ describe("TransactionsService", () => {
           await transactionService.withdrawFromBalance(id, replenishBalance);
         } catch(err) {
           expect(err).toBeInstanceOf(HttpException);
-          expect(err.message).toEqual(`Not enough money on the Account"s balance to complete the transaction`)          
+          expect(err.message).toEqual(`Not enough money on the Account's balance to complete the transaction`);        
         }
-      })
-    })
+      });
+    });
   });
 });
