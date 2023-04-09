@@ -1,13 +1,15 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Client } from "../../clients/entities/client.entity";
 import { Transaction } from "../../transactions/entities/transaction.entity";
+import { GetClientDto } from "src/clients/dto/get-client.dto";
+import { GetTransactionDto } from "src/transactions/dto/get-transaction.dto";
 
 export class GetAccountDto {
     @ApiProperty()
-    person: Client;
+    person: GetClientDto;
 
     @ApiProperty()
-    transactions: Transaction[]
+    transactions: GetTransactionDto[]
 
     @ApiProperty()
     balance: number;

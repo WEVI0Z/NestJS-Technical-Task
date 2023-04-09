@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsBoolean, IsDate, IsNumber, IsOptional, ValidateNested } from "class-validator";
+import { IsBoolean, IsDate, IsDateString, IsNumber, IsOptional, IsPositive, ValidateNested } from "class-validator";
 import { Client } from "../../clients/entities/client.entity";
 import { Transaction } from "../../transactions/entities/transaction.entity";
 import { Type } from "class-transformer";
@@ -14,11 +14,12 @@ export class PatchAccountDto {
     @ValidateNested({each: true})
     @Type(() => Transaction)
     @IsOptional()
-    @ApiProperty()
+    @ApiProperty({type: Transaction, isArray: true})
     transactions?: Transaction[]
 
     @IsNumber()
     @IsOptional()
+    @IsPositive()
     @ApiProperty()
     balance?: number;
 
@@ -37,7 +38,7 @@ export class PatchAccountDto {
     @ApiProperty()
     accountType?: number;
 
-    @IsDate()
+    @IsDateString()
     @IsOptional()
     @ApiProperty()
     createDate?: Date;

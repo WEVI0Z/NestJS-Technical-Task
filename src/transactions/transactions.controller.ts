@@ -48,8 +48,7 @@ export class TransactionsController {
         return this.transactionsService.replenishBalance(id, replenishBalanceDto);
     }
     
-    @UseGuards(BlockedUserGuard)
-    @UseGuards(BalanceRequestLimitGuard)
+    @UseGuards(BlockedUserGuard, BalanceRequestLimitGuard)
     @Patch(":accountId/balance/withdraw")
     @ApiOperation({summary: "Withdraws from the account's balance"})
     @ApiResponse({status: HttpStatus.OK, description: "Success", type: GetTransactionDto})

@@ -20,7 +20,6 @@ export class Account {
     balance: number;
 
     @Column({
-        name: "daily_withdrawal_limit",
         default: 10
     })
     dailyWithdrawalLimit: number;
